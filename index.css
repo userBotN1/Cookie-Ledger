@@ -1,0 +1,167 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  /* font-family: "Poppins", sans-serif; */
+}
+
+.numbers {
+  /* color: rgba(149 194 186); */
+  font-family: "Open Sans", sans-serif;
+}
+
+/* --------------- HEADER LAYOUT --------------- */
+header {
+  text-align: center;
+  margin: 1.1em auto;
+  position: sticky;
+  top: 0px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 253, 1) 85%,
+    rgba(255, 255, 253, 0.8)
+  );
+}
+.month-year {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 3px;
+}
+.month-year-details {
+  color: rgba(144, 144, 143, 255);
+}
+
+/* --------------- EXPENSE/INCOME CONTAINER LAYOUT --------------- */
+.expense-income-container {
+  display: flex;
+  column-gap: 10px;
+  flex-flow: row wrap;
+  margin: 0 1rem 16px 1rem;
+}
+
+.expense-income-container__expense,
+.expense-income-container__income {
+  flex: 1;
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content min-content;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-radius: 20px;
+  background-color: rgba(244, 244, 243, 255);
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+}
+
+.expense-income-container__expense_emoji,
+.expense-income-container__income_emoji {
+  grid-area: 1/1/2/2;
+}
+
+.expense-income-container__expense_desc,
+.expense-income-container__income_desc {
+  grid-area: 1/2/2/3;
+  margin-left: 4px;
+  color: rgba(144, 144, 143, 255);
+  font-size: 1.1em;
+}
+
+.expense-income-container__expense_value,
+.expense-income-container__income_value {
+  grid-area: 2/1/3/3;
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  font-size: 1.8em;
+  overflow-x: auto;
+}
+
+/* --------------- ALL DAYS CONTAINER LAYOUT --------------- */
+.day-container__title {
+  margin: auto 1rem;
+  display: grid;
+  grid-template-columns: 1fr minmax(min-content, max-content) minmax(
+      min-content,
+      max-content
+    );
+  align-items: center;
+}
+
+.day-container__date {
+  color: rgba(144, 144, 143, 255);
+  font-size: 1.1em;
+  white-space: nowrap;
+  padding: 6px;
+}
+
+.day-container__total-expense,
+.day-container__total-income {
+  font-family: "Open Sans", sans-serif;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  padding: 0.1em;
+  color: rgba(69, 71, 70, 255);
+}
+
+.day-container__details {
+  list-style: none;
+  padding: 0;
+  list-style-type: none;
+  margin: auto 1rem;
+}
+
+.day-container__details li {
+  background-color: rgba(244, 244, 243, 255);
+  margin-bottom: 2px;
+  padding: 14px;
+  display: grid;
+  grid-template-areas:
+    "emoji category amount"
+    "emoji time amount";
+  grid-template-columns: min-content 1fr minmax(min-content, max-content);
+  align-items: center;
+}
+
+.day-container__details li:first-child {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.day-container__details li:last-child {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.day-container__details-emoji {
+  grid-area: emoji;
+  font-size: 2em;
+  margin-right: 4px;
+}
+
+.day-container__details-category {
+  grid-area: category;
+}
+.day-container__details-time {
+  /* font-family: "Open Sans", sans-serif; */
+  grid-area: time;
+  color: rgba(139, 140, 139, 255);
+}
+.day-container__details-amount {
+  grid-area: amount;
+  word-break: break-all;
+  margin: auto 6px;
+}
+
+/* --------------- FOOTER LAYOUT --------------- */
+footer {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+footer div {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  margin: 4px auto;
+}
