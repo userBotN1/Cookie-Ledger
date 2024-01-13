@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.numbers {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* --------------- HEADER LAYOUT --------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.1em 1rem;
+}
+
+header button {
+  border: none;
+  background: none;
+}
+
+header img {
+  background-color: rgba(244, 244, 243, 255);
+  border-radius: 20px;
+  padding: 8px;
+}
+
+.date-container {
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+}
+.date-container__details {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.date-container__range {
+  color: rgba(139, 140, 139, 255);
+}
+
+/* --------------- SUMMARY CONTAINER LAYOUT --------------- */
+.summary-container {
+  margin: auto 1rem;
+  display: flex;
+  flex-flow: column wrap;
+  background-color: rgba(244, 244, 243, 255);
+  border-radius: 20px;
+  margin-bottom: 1.1em;
+}
+
+.summary-container__desc {
+  color: rgba(139, 140, 139, 255);
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+.summary-container__main-area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, min-content);
+  gap: 10px;
+  padding: 16px;
+}
+
+.summary-container__main-area div {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 16px;
+  background-color: rgba(239, 240, 238, 1);
+  border-radius: 20px;
+}
+
+.summary-container__main-area_desc {
+  color: rgba(139, 140, 139, 255);
+}
+
+.summary-container__main-area_value {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+/* --------------- FREQUENCY CONTAINER LAYOUT --------------- */
+.frequency-container {
+  margin: auto 1rem;
+  display: flex;
+  flex-flow: column wrap;
+  background-color: rgba(244, 244, 243, 255);
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.frequency-container__desc {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px; */
+  margin-bottom: 10px;
+}
+
+.frequency-container__desc button {
+  border: none;
+  background: none;
+}
+
+.frequency-container__desc img {
+  /* border-radius: 20px; */
+}
+
+.frequency-container__main-area {
+  /* border: 1px solid blue; */
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  row-gap: 10px;
+}
+
+.frequency-container__main-area div {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+
+.frequency-container__main-area-emoji {
+  border-radius: 50%;
+  background-color: rgba(239, 240, 238, 1);
+  padding: 10px;
+  font-size: 1.6em;
+}

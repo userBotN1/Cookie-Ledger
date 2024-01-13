@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="trend.css" />
+    <title>Trend</title>
+  </head>
+  <body>
+    <header>
+      <button class="change-date-btn">
+        <img src="../assets/trend.svg" alt="Trend Icon" />
+      </button>
+      <div class="date-container">
+        <span class="date-container__details">Aug. 2023 - Jan. 2024</span>
+        <span class="date-container__range"
+          >Aug 1st, 2023 - Jan. 31st, 2024</span
+        >
+      </div>
+      <button class="customize-btn" type="button">
+        <img src="../assets/add-button.svg" alt="Customize Icon" />
+      </button>
+    </header>
+
+    <body>
+      <div class="summary-container">
+        <div class="summary-container__desc">Aug. 2023 - Jan. 2024 Summary</div>
+        <div class="summary-container__main-area">
+          <div>
+            <span class="summary-container__main-area_desc">Expenditure</span>
+            <span class="summary-container__main-area_value numbers">$141</span>
+          </div>
+          <div>
+            <span class="summary-container__main-area_desc">Income</span>
+            <span class="summary-container__main-area_value numbers">$9</span>
+          </div>
+          <div>
+            <span class="summary-container__main-area_desc">balance</span>
+            <span class="summary-container__main-area_value numbers"
+              >-$132</span
+            >
+          </div>
+          <div>
+            <span class="summary-container__main-area_desc">Booking Times</span>
+            <span class="summary-container__main-area_value numbers">4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="piechart-rank-container"></div>
+
+      <div class="frequency-container">
+        <div class="frequency-container__desc">
+          <span>Expenditure Frequency</span>
+          <button type="button">
+            <img src="../assets/more.svg" alt="More Icon" />
+          </button>
+        </div>
+        <div class="frequency-container__main-area">
+          <div>
+            <span class="frequency-container__main-area-emoji">🚌</span>
+            <span class="numbers">4</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🏨</span>
+            <span class="numbers">2</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🎁</span>
+            <span class="numbers">1</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🚌</span>
+            <span class="numbers">4</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🏨</span>
+            <span class="numbers">2</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🎁</span>
+            <span class="numbers">1</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🚌</span>
+            <span class="numbers">4</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🏨</span>
+            <span class="numbers">2</span>
+          </div>
+          <div>
+            <span class="frequency-container__main-area-emoji">🎁</span>
+            <span class="numbers">1</span>
+          </div>
+        </div>
+      </div>
+    </body>
+
+    <footer></footer>
+
+    <script src="./trend.js"></script>
+  </body>
+</html>

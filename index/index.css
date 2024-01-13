@@ -13,7 +13,7 @@
 /* --------------- HEADER LAYOUT --------------- */
 header {
   text-align: center;
-  margin: 1.1em auto;
+  margin: 1.1em 1rem;
   position: sticky;
   top: 0px;
   background: linear-gradient(
@@ -34,7 +34,7 @@ header {
 /* --------------- EXPENSE/INCOME CONTAINER LAYOUT --------------- */
 .expense-income-container {
   display: flex;
-  column-gap: 10px;
+  gap: 10px;
   flex-flow: row wrap;
   margin: 0 1rem 16px 1rem;
 }
