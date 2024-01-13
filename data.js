@@ -1,0 +1,17 @@
+categories = {
+  Housing: "🏠",
+  Gift: "🎁",
+  Others: "🎃",
+  Dining: "🍽",
+  Transportation: "🚌",
+  Grocery: "🧻",
+  Game: "🎮",
+  Clothing: "👗",
+  Travel: "✈️",
+  Hotel: "🏨",
+  Pet: "🐶",
+  Transfer: "💸",
+  Study: "💡",
+  Meidical: "🏥",
+  Creative: "🤯",
+};
