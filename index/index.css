@@ -158,6 +158,11 @@ footer {
   display: flex;
   justify-content: space-around;
   flex-flow: row wrap;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(245, 243, 242, 1);
+  padding: 12px 0;
 }
 footer div {
   display: flex;
