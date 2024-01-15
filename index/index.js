@@ -1,5 +1,4 @@
 /* --------------- DATA PROCESSING --------------- */
-
 class Booking {
   constructor(e) {
     this.emoji = categories[e.category];
@@ -8,43 +7,6 @@ class Booking {
     this.value = e.value;
     this.isExpenditure = e.isExpenditure;
   }
-
-  //   getSeconds() {
-  //     return this.time.getSeconds();
-  //   }
-
-  //   getMinutes() {
-  //     // Indexing from 0 - 59
-  //     return this.time.getMinutes();
-  //   }
-
-  //   getHours() {
-  //     // Indexing from 0 - 23
-  //     return this.time.getHours();
-  //   }
-
-  //   /**
-  //    *
-  //    * @returns Index representing which day it is within a week (Monday, Tuesday, ...)
-  //    */
-  //   getDay() {
-  //     // Indexing from 0 - 6
-  //     return this.time.getDay();
-  //   }
-
-  //   getDate() {
-  //     // Indexing from 1 - 31
-  //     return this.time.getDate();
-  //   }
-
-  //   getMonth() {
-  //     // Indexing from 0 - 11
-  //     return this.time.getMonth();
-  //   }
-
-  //   getYear() {
-  //     return this.time.getFullYear();
-  //   }
 
   /**
    *
@@ -138,47 +100,107 @@ class UIData {
     return map;
   }
 }
+// const data = new UIData();
+// const map = data.mapping();
+// console.log(map.get(2024).get(0).get(1));
 
-const data = new UIData();
-const map = data.mapping();
-console.log(map.get(2024).get(0).get(1));
-
-// A particular day
 class Day {
   constructor(str) {
-    //YYYY-MM-DD ("2023-09-20")
-    // get all today's data
     const time = str.split("-");
-    const year = time[0];
-    const month = time[1];
-    const date = time[2];
-    // const data = map.get(year).get(month).get(date)
+    this.year = parseInt(time[0]);
+    this.month = parseInt(time[1]) - 1;
+    this.date = parseInt(time[2]);
+
+    console.log(typeof this.year);
+
+    const map = new UIData().mapping();
+    const data = map.get(this.year).get(this.month).get(this.date);
+    this.data = data;
   }
 
-  getDay() {}
+  /**
+   *
+   * @returns A day (Monday, Tuesday, ...) based on the given Date()
+   */
+  getDay() {
+    const str = `${this.year.toString()}-${(
+      this.month + 1
+    ).toString()}-${this.date.toString()}`;
+    const time = new Date(str);
+    return dayIndex[time.getDay()];
+  }
 
-  getDate() {}
+  /**
+   *
+   * @returns A stirng in the format "Tuesday, Sep. 25"
+   */
+  stringifyDayDate() {
+    const day = this.getDay();
+    const month = monthIndex[this.month + 1];
+    return `${day}, ${month} ${this.date}`;
+  }
 
-  getTotalExpenditure() {}
+  /**
+   * Calculates total expenditure on a given date
+   * @returns numbers
+   */
+  getTotalExpenditure() {
+    return this.data.reduce((acc, e) => {
+      if (e.isExpenditure) {
+        return acc + e.value;
+      } else {
+        return acc;
+      }
+    }, 0);
+  }
 
-  getTotalIncome() {}
+  /**
+   *
+   * @returns A string indicating total expenditure on a given date
+   */
+  stringifyTotalExpenditure() {
+    const value = this.getTotalExpenditure();
+    if (Number.isInteger(value)) {
+      return `💸 $${value}`;
+    }
+    return `💸 $${value.toFixed(2)}`;
+  }
 
-  rankBookings() {}
+  /**
+   * Calculates total income on a given date
+   * @returns numbers
+   */
+  getTotalIncome() {
+    return this.data.reduce((acc, e) => {
+      if (e.isExpenditure) {
+        return acc;
+      } else {
+        return acc + e.value;
+      }
+    }, 0);
+  }
+
+  /**
+   *
+   * @returns A string indicating total income on a given date
+   */
+  stringifyTotalIncome() {
+    const value = this.getTotalIncome();
+    if (Number.isInteger(value)) {
+      return `💰 $${value}`;
+    }
+    return `💰 $${value.toFixed(2)}`;
+  }
+
+  /**
+   * Ranks the bookings on a given date (latest bookings on top)
+   */
+  rankBookings() {
+    this.data.sort((a, b) => b.time - a.time);
+  }
 }
-
-// for (const e of bookings) {
-//   const temp = new Booking(e);
-//   console.log(temp.stringifyValue());
-// }
-
-// const booking1 = new Booking({
-//   category: "study",
-//   time: "2023-10-26T20:17:19.729",
-//   value: 129.69797205047885,
-//   isExpenditure: true,
-// });
-
-// console.log(booking1.stringifyTime());
+// const day1 = new Day("2023-09-04");
+// day1.rankBookings();
 
 //-------------------------------------------------------------------------
 /*

@@ -31,6 +31,16 @@ const monthIndex = {
   12: "Dec.",
 };
 
+const dayIndex = {
+  0: "Sunday",
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
+};
+
 const bookings = [
   {
     category: "pet",
@@ -1834,8 +1844,8 @@ const bookings = [
   },
   {
     category: "transportation",
-    time: "2024-01-25T20:23:01.776",
-    value: 171.9,
+    time: "2024-01-05T20:23:01.776",
+    value: 172.9,
     isExpenditure: false,
   },
 ];
