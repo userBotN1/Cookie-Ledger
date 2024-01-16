@@ -1879,13 +1879,25 @@ const bookings = [
   {
     category: "transportation",
     time: "2025-01-05T20:23:01.776",
-    value: 72,
+    value: 72.9878,
     isExpenditure: false,
   },
   {
     category: "dining",
-    time: "2025-01-13T20:23:01.776",
+    time: "2025-02-13T20:23:01.776",
     value: 8.1,
+    isExpenditure: true,
+  },
+  {
+    category: "dining",
+    time: "2025-05-13T13:56:51.776",
+    value: 23,
     isExpenditure: false,
+  },
+  {
+    category: "grocery",
+    time: "2025-06-23T20:23:01.776",
+    value: 7,
+    isExpenditure: true,
   },
 ];

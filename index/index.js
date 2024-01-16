@@ -285,38 +285,46 @@ class Month {
 // month1.stringifyDateRange();
 
 class Year {
-  constructor() {
-    // get all this year's data
+  constructor(str) {
+    this.year = parseInt(str);
+    this.data = new UIData().mapping().get(this.year);
   }
 
-  getTotalExpenditure() {}
+  getTotalExpenditure() {
+    let sum = 0;
+    this.data.forEach(function (bookings, month) {
+      const temp = new Month(`${this.year}-${month}`);
+      sum += temp.getTotalExpenditure();
+    }, this);
+    return sum;
+  }
 
-  stringifyTotalExpenditure() {}
-
-  getTotalIncome() {}
-
-  stringifyTotalIncome() {}
-}
-
-//-------------------------------------------------------------------------
-/*
-class UIData {
-  constructor() {
-    const data = [];
-    for (const e of bookings) {
-      data.push(new Booking(e));
+  stringifyTotalExpenditure() {
+    const value = this.getTotalExpenditure();
+    if (Number.isInteger(value)) {
+      return `$${value}`;
     }
-    this.data = data;
+    return `$${value.toFixed(2)}`;
   }
 
-  printout() {
-    console.log(this.data);
+  getTotalIncome() {
+    let sum = 0;
+    this.data.forEach(function (bookings, month) {
+      const temp = new Month(`${this.year}-${month}`);
+      sum += temp.getTotalIncome();
+    }, this);
+    return sum;
+  }
+
+  stringifyTotalIncome() {
+    const value = this.getTotalIncome();
+    if (Number.isInteger(value)) {
+      return `$${value}`;
+    }
+    return `$${value.toFixed(2)}`;
   }
 }
-
-
-// object Day
-// calculate daily/monthly/yearly total expendirue/income
-*/
+// const year1 = new Year("2025");
+// year1.stringifyTotalIncome();
 
 /* --------------- INTERFACE --------------- */
