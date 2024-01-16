@@ -209,32 +209,80 @@ class Month {
     this.data = data;
   }
 
+  /**
+   * Calculates total expenditure on a given month
+   * @returns numbers
+   */
   getTotalExpenditure() {
     let sum = 0;
     this.data.forEach(function (bookings, day) {
-      const str = `${this.year}-${this.month}-${day}`;
-      const temp = new Day(str);
+      const temp = new Day(`${this.year}-${this.month}-${day}`);
       sum += temp.getTotalExpenditure();
     }, this);
-    console.log(sum);
+    return sum;
   }
 
-  stringifyTotalExpenditure() {}
+  /**
+   *
+   * @returns A string indicating total expenditure on a given month
+   */
+  stringifyTotalExpenditure() {
+    const value = this.getTotalExpenditure();
+    if (Number.isInteger(value)) {
+      return `$${value}`;
+    }
+    return `$${value.toFixed(2)}`;
+  }
 
-  getTotalIncome() {}
+  /**
+   * Calculates total income on a given month
+   * @returns numbers
+   */
+  getTotalIncome() {
+    let sum = 0;
+    this.data.forEach(function (bookings, day) {
+      const temp = new Day(`${this.year}-${this.month}-${day}`);
+      sum += temp.getTotalIncome();
+    }, this);
+    return sum;
+  }
 
-  stringifyTotalIncome() {}
+  /**
+   *
+   * @returns A string indicating total income on a given month
+   */
+  stringifyTotalIncome() {
+    const value = this.getTotalIncome();
+    if (Number.isInteger(value)) {
+      return `$${value}`;
+    }
+    return `$${value.toFixed(2)}`;
+  }
 
+  /**
+   *
+   * @returns A string in format (September 2023)
+   */
   stringifyHeader() {
-    // September 2023
+    return `${fullMonthIndex[this.month]} ${this.year}`;
   }
 
+  /**
+   *
+   * @returns A string in format (09/01/2023 - 09/30/2023)
+   */
   stringifyDateRange() {
-    // 09/01/2023 - 09/30/2023
+    const lastDay = new Date(this.year, this.month, 0)
+      .getDate()
+      .toString()
+      .padStart(2, "0");
+    const month = this.month.toString().padStart(2, "0");
+    const year = this.year.toString();
+    return `${month}/01/${year} - ${month}/${lastDay}/${year}`;
   }
 }
-const month1 = new Month("2025-01");
-month1.getTotalExpenditure();
+// const month1 = new Month("2023-09");
+// month1.stringifyDateRange();
 
 class Year {
   constructor() {
