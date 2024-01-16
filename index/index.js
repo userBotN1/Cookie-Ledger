@@ -280,9 +280,21 @@ class Month {
     const year = this.year.toString();
     return `${month}/01/${year} - ${month}/${lastDay}/${year}`;
   }
+
+  /**
+   * Ranks the bookings of a given month (latest date on top)
+   */
+  rankBookings() {
+    const dateArr = [];
+    this.data.forEach(function (_, date) {
+      dateArr.push(date);
+    });
+    dateArr.sort((a, b) => b - a);
+    return dateArr;
+  }
 }
 // const month1 = new Month("2023-09");
-// month1.stringifyDateRange();
+// const ranks = month1.rankBookings();
 
 class Year {
   constructor(str) {
