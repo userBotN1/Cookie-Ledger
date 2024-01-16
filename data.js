@@ -31,6 +31,21 @@ const monthIndex = {
   12: "Dec.",
 };
 
+const fullMonthIndex = {
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
 const dayIndex = {
   0: "Sunday",
   1: "Monday",
@@ -1847,5 +1862,30 @@ const bookings = [
     time: "2024-01-05T20:23:01.776",
     value: 172.9,
     isExpenditure: false,
+  },
+  {
+    category: "housing",
+    time: "2023-10-21T02:08:21.938",
+    value: 149.91208521458813,
+    isExpenditure: true,
+  },
+  // ---------------- Fake Data ------------------
+  {
+    category: "others",
+    time: "2025-01-25T13:56:51.776",
+    value: 50.9,
+    isExpenditure: true,
+  },
+  {
+    category: "transportation",
+    time: "2025-01-05T20:23:01.776",
+    value: 72.23,
+    isExpenditure: false,
+  },
+  {
+    category: "dining",
+    time: "2025-01-13T20:23:01.776",
+    value: 8,
+    isExpenditure: true,
   },
 ];

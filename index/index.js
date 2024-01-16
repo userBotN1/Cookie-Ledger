@@ -67,7 +67,7 @@ class UIData {
     map.forEach(function (bookings, year) {
       const monthMap = new Map();
       for (const e of bookings) {
-        const month = e.time.getMonth();
+        const month = e.time.getMonth() + 1;
         if (monthMap.has(month)) {
           const tempArr = monthMap.get(month);
           tempArr.push(e);
@@ -102,16 +102,14 @@ class UIData {
 }
 // const data = new UIData();
 // const map = data.mapping();
-// console.log(map.get(2024).get(0).get(1));
+// console.log(map.get(2024).get(1).get(1));
 
 class Day {
   constructor(str) {
     const time = str.split("-");
     this.year = parseInt(time[0]);
-    this.month = parseInt(time[1]) - 1;
+    this.month = parseInt(time[1]);
     this.date = parseInt(time[2]);
-
-    console.log(typeof this.year);
 
     const map = new UIData().mapping();
     const data = map.get(this.year).get(this.month).get(this.date);
@@ -123,9 +121,7 @@ class Day {
    * @returns A day (Monday, Tuesday, ...) based on the given Date()
    */
   getDay() {
-    const str = `${this.year.toString()}-${(
-      this.month + 1
-    ).toString()}-${this.date.toString()}`;
+    const str = `${this.year.toString()}-${this.month.toString()}-${this.date.toString()}`;
     const time = new Date(str);
     return dayIndex[time.getDay()];
   }
@@ -136,7 +132,7 @@ class Day {
    */
   stringifyDayDate() {
     const day = this.getDay();
-    const month = monthIndex[this.month + 1];
+    const month = monthIndex[this.month];
     return `${day}, ${month} ${this.date}`;
   }
 
@@ -199,39 +195,63 @@ class Day {
     this.data.sort((a, b) => b.time - a.time);
   }
 }
-// const day1 = new Day("2023-09-04");
-// day1.rankBookings();
+// const day1 = new Day("2024-01-03");
+// console.log(day1.getTotalIncome());
 
-//-------------------------------------------------------------------------
-/*
 class Month {
-  constructor() {
-    // get all this month's data
+  constructor(str) {
+    const time = str.split("-");
+    this.year = parseInt(time[0]);
+    this.month = parseInt(time[1]);
+
+    const map = new UIData().mapping();
+    const data = map.get(this.year).get(this.month);
+    this.data = data;
   }
 
-  getDay() {}
+  getTotalExpenditure() {
+    let sum = 0;
+    this.data.forEach(function (bookings, day) {
+      const str = `${this.year}-${this.month}-${day}`;
+      const temp = new Day(str);
+      sum += temp.getTotalExpenditure();
+    }, this);
+    console.log(sum);
+  }
 
-  getDate() {}
-
-  getTotalExpenditure() {}
+  stringifyTotalExpenditure() {}
 
   getTotalIncome() {}
+
+  stringifyTotalIncome() {}
+
+  stringifyHeader() {
+    // September 2023
+  }
+
+  stringifyDateRange() {
+    // 09/01/2023 - 09/30/2023
+  }
 }
+const month1 = new Month("2025-01");
+month1.getTotalExpenditure();
 
 class Year {
   constructor() {
     // get all this year's data
   }
 
-  getDay() {}
-
-  getDate() {}
-
   getTotalExpenditure() {}
 
+  stringifyTotalExpenditure() {}
+
   getTotalIncome() {}
+
+  stringifyTotalIncome() {}
 }
 
+//-------------------------------------------------------------------------
+/*
 class UIData {
   constructor() {
     const data = [];
@@ -246,11 +266,8 @@ class UIData {
   }
 }
 
-const temp = new UIData();
-temp.printout();
 
 // object Day
-
 // calculate daily/monthly/yearly total expendirue/income
 */
 
