@@ -1884,6 +1884,12 @@ const bookings = [
   },
   {
     category: "dining",
+    time: "2025-01-05T12:26:01.776",
+    value: 34.6,
+    isExpenditure: true,
+  },
+  {
+    category: "dining",
     time: "2025-02-13T20:23:01.776",
     value: 8.1,
     isExpenditure: true,

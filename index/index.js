@@ -340,3 +340,76 @@ class Year {
 // year1.stringifyTotalIncome();
 
 /* --------------- INTERFACE --------------- */
+class UI {
+  constructor(str) {
+    const time = str.split("-");
+    this.year = parseInt(time[0]);
+    if (time.length == 1) {
+      this.month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    } else {
+      this.month = [parseInt(time[1])];
+    }
+
+    const monthData = [];
+    for (const e of this.month) {
+      const temp = new Month(`${this.year}-${e}`);
+      if (temp.data) {
+        monthData.push(temp);
+      }
+    }
+
+    const dateData = [];
+    for (const e of monthData) {
+      e.data.forEach(function (value, key) {
+        const temp = new Day(`${e.year}-${e.month}-${key}`);
+        dateData.push(temp);
+      });
+    }
+
+    this.data = dateData;
+    this.doms = {
+      dayContainer: document.querySelector(".day-container"),
+    };
+    this.createOneDayHTML();
+  }
+
+  createBookingHTML(booking) {
+    // console.log(booking);
+
+    const template = `
+    <li>
+        <span class="day-container__details-emoji">${booking.emoji}</span>
+        <span class="day-container__details-category">${booking.category}</span>
+        <span class="day-container__details-time">${booking.stringifyTime()}</span>
+        <span class="day-container__details-amount numbers">${booking.stringifyValue()}</span>
+    </li>`;
+    return template;
+  }
+
+  createOneDayHTML() {
+    let template = `<div class="day-container__title">
+        <span class="day-container__date">Thursday, Sept. 28th</span>
+        <span class="day-container__total-expense numbers">💸 $14.92</span>
+        <span class="day-container__total-income numbers"> 💰 $2,232 </span>
+    </div>`;
+
+    console.log(this.data);
+
+    for (const e of this.data) {
+      const dayDateText = e.stringifyDayDate();
+      const totalExpenditureText = e.stringifyTotalExpenditure();
+      const totalIncomeText = e.stringifyTotalIncome();
+
+      let ulText = `<ul class="day-container__details">`;
+      for (const booking of e.data) {
+        ulText += this.createBookingHTML(booking);
+      }
+      ulText += `</ul>`;
+      template += ulText;
+    }
+    template += `</div>`;
+  }
+}
+
+// const ui1 = new UI("2025");
+const ui2 = new UI("2025-01");
