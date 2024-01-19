@@ -1878,6 +1878,12 @@ const bookings = [
   },
   {
     category: "transportation",
+    time: "2025-01-05T02:23:01.776",
+    value: 72.9878,
+    isExpenditure: false,
+  },
+  {
+    category: "transportation",
     time: "2025-01-05T20:23:01.776",
     value: 72.9878,
     isExpenditure: false,

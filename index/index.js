@@ -114,6 +114,7 @@ class Day {
     const map = new UIData().mapping();
     const data = map.get(this.year).get(this.month).get(this.date);
     this.data = data;
+    console.log(this.data);
   }
 
   /**
@@ -195,7 +196,7 @@ class Day {
     this.data.sort((a, b) => b.time - a.time);
   }
 }
-// const day1 = new Day("2024-01-03");
+const day1 = new Day("2024-01-03");
 // console.log(day1.getTotalIncome());
 
 class Month {
@@ -339,6 +340,9 @@ class Year {
 // const year1 = new Year("2025");
 // year1.stringifyTotalIncome();
 
+/**
+ * this.data is an array of Day objects
+ */
 /* --------------- INTERFACE --------------- */
 class UI {
   constructor(str) {
@@ -371,44 +375,56 @@ class UI {
       dayContainer: document.querySelector(".day-container"),
     };
     this.createOneDayHTML();
+    this.updateHeader();
   }
 
+  /**
+   *
+   * @param {A booking object} booking
+   * @returns HTML content for one booking
+   */
   createBookingHTML(booking) {
-    // console.log(booking);
+    const category = booking.category;
+    const capitalizedCategory =
+      category.charAt(0).toUpperCase() + category.slice(1);
 
-    const template = `
-    <li>
-        <span class="day-container__details-emoji">${booking.emoji}</span>
-        <span class="day-container__details-category">${booking.category}</span>
-        <span class="day-container__details-time">${booking.stringifyTime()}</span>
-        <span class="day-container__details-amount numbers">${booking.stringifyValue()}</span>
-    </li>`;
-    return template;
+    return `
+        <li>
+            <span class="day-container__details-emoji">${booking.emoji}</span>
+            <span class="day-container__details-category">${capitalizedCategory}</span>
+            <span class="day-container__details-time">${booking.stringifyTime()}</span>
+            <span class="day-container__details-amount numbers">${booking.stringifyValue()}</span>
+        </li>`;
   }
 
+  /**
+   * Generate HTML content for one day
+   */
   createOneDayHTML() {
-    let template = `<div class="day-container__title">
-        <span class="day-container__date">Thursday, Sept. 28th</span>
-        <span class="day-container__total-expense numbers">💸 $14.92</span>
-        <span class="day-container__total-income numbers"> 💰 $2,232 </span>
-    </div>`;
-
-    console.log(this.data);
+    let dayTitle = ``;
 
     for (const e of this.data) {
-      const dayDateText = e.stringifyDayDate();
-      const totalExpenditureText = e.stringifyTotalExpenditure();
-      const totalIncomeText = e.stringifyTotalIncome();
+      e.rankBookings();
+      dayTitle += `
+        <div class="day-container__title">
+            <span class="day-container__date">${e.stringifyDayDate()}</span>
+            <span class="day-container__total-expense numbers">${e.stringifyTotalExpenditure()}</span>
+            <span class="day-container__total-income numbers">${e.stringifyTotalIncome()}</span>
+        </div>`;
 
-      let ulText = `<ul class="day-container__details">`;
+      let dayBookings = `<ul class="day-container__details">`;
+
       for (const booking of e.data) {
-        ulText += this.createBookingHTML(booking);
+        dayBookings += this.createBookingHTML(booking);
       }
-      ulText += `</ul>`;
-      template += ulText;
+      dayBookings += `</ul>`;
+      dayTitle += dayBookings;
     }
-    template += `</div>`;
+
+    this.doms.dayContainer.innerHTML = dayTitle;
   }
+
+  updateHeader() {}
 }
 
 // const ui1 = new UI("2025");

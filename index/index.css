@@ -136,7 +136,7 @@ header {
 .day-container__details-emoji {
   grid-area: emoji;
   font-size: 2em;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .day-container__details-category {
