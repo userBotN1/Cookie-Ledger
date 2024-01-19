@@ -12,7 +12,7 @@ const categories = {
   pet: "🐶",
   transfer: "💸",
   study: "💡",
-  meidical: "🏥",
+  medical: "🏥",
   creative: "🤯",
 };
 
@@ -1878,7 +1878,7 @@ const bookings = [
   },
   {
     category: "transportation",
-    time: "2025-01-05T02:23:01.776",
+    time: "2025-01-05T:23:01.776",
     value: 72.9878,
     isExpenditure: false,
   },

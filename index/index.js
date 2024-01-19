@@ -114,7 +114,6 @@ class Day {
     const map = new UIData().mapping();
     const data = map.get(this.year).get(this.month).get(this.date);
     this.data = data;
-    console.log(this.data);
   }
 
   /**
@@ -336,6 +335,19 @@ class Year {
     }
     return `$${value.toFixed(2)}`;
   }
+
+  /**
+   *
+   * @returns A string in format (01/01/2023 - 12/31/2023)
+   */
+  stringifyDateRange() {
+    const lastDay = new Date(this.year, 12, 0)
+      .getDate()
+      .toString()
+      .padStart(2, "0");
+    const year = this.year.toString();
+    return `01/01/${year} - 12/${lastDay}/${year}`;
+  }
 }
 // const year1 = new Year("2025");
 // year1.stringifyTotalIncome();
@@ -373,9 +385,17 @@ class UI {
     this.data = dateData;
     this.doms = {
       dayContainer: document.querySelector(".day-container"),
+      header: document.querySelector("header"),
+      summaryExpenditure: document.querySelector(
+        ".expense-income-container__expense_value"
+      ),
+      summaryIncome: document.querySelector(
+        ".expense-income-container__income_value"
+      ),
     };
     this.createOneDayHTML();
     this.updateHeader();
+    this.updateSummary();
   }
 
   /**
@@ -424,8 +444,40 @@ class UI {
     this.doms.dayContainer.innerHTML = dayTitle;
   }
 
-  updateHeader() {}
+  updateHeader() {
+    const month = fullMonthIndex[this.month];
+    let dateRange = "";
+
+    if (this.month.length === 1) {
+      dateRange = new Month(`${this.year}-${this.month}`).stringifyDateRange();
+    } else {
+      dateRange = new Year(`${this.year}`).stringifyDateRange();
+    }
+
+    const template = `
+        <div class="month-year">${!month ? "" : month} ${this.year}</div>
+        <div class="month-year-details">${dateRange}</div>`;
+    this.doms.header.innerHTML = template;
+  }
+
+  updateSummary() {
+    let expenditure = "";
+    let income = "";
+
+    if (this.month.length === 1) {
+      const tempMonth = new Month(`${this.year}-${this.month}`);
+      expenditure = tempMonth.stringifyTotalExpenditure();
+      income = tempMonth.stringifyTotalIncome();
+    } else {
+      const tempYear = new Year(`${this.year}`);
+      expenditure = tempYear.stringifyTotalExpenditure();
+      income = tempYear.stringifyTotalIncome();
+    }
+
+    this.doms.summaryExpenditure.textContent = expenditure;
+    this.doms.summaryIncome.textContent = income;
+  }
 }
 
 // const ui1 = new UI("2025");
-const ui2 = new UI("2025-01");
+const ui2 = new UI("2023-11");
