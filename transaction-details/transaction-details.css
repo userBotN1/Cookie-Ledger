@@ -44,6 +44,9 @@ header span {
   gap: 10px;
 }
 
+.details-container::after {
+}
+
 .category-container,
 .amount-container {
   display: grid;

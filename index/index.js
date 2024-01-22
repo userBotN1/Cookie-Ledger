@@ -183,9 +183,9 @@ class Day {
   stringifyTotalIncome() {
     const value = this.getTotalIncome();
     if (Number.isInteger(value)) {
-      return `💰 $${value}`;
+      return `💰$${value}`;
     }
-    return `💰 $${value.toFixed(2)}`;
+    return `💰$${value.toFixed(2)}`;
   }
 
   /**
@@ -352,9 +352,6 @@ class Year {
 // const year1 = new Year("2025");
 // year1.stringifyTotalIncome();
 
-/**
- * this.data is an array of Day objects
- */
 /* --------------- INTERFACE --------------- */
 class UI {
   constructor(str) {
@@ -392,7 +389,9 @@ class UI {
       summaryIncome: document.querySelector(
         ".expense-income-container__income_value"
       ),
+      allDaysContainer: document.querySelector(".all-days-container"),
     };
+
     this.createOneDayHTML();
     this.updateHeader();
     this.updateSummary();
@@ -401,15 +400,16 @@ class UI {
   /**
    *
    * @param {A booking object} booking
+   * @param {number} index
    * @returns HTML content for one booking
    */
-  createBookingHTML(booking) {
+  createBookingHTML(booking, index) {
     const category = booking.category;
     const capitalizedCategory =
       category.charAt(0).toUpperCase() + category.slice(1);
 
     return `
-        <li>
+        <li index=${index} class="day-container__details_booking">
             <span class="day-container__details-emoji">${booking.emoji}</span>
             <span class="day-container__details-category">${capitalizedCategory}</span>
             <span class="day-container__details-time">${booking.stringifyTime()}</span>
@@ -421,6 +421,7 @@ class UI {
    * Generate HTML content for one day
    */
   createOneDayHTML() {
+    this.data.sort((a, b) => b.date - a.date);
     let dayTitle = ``;
 
     for (const e of this.data) {
@@ -434,6 +435,7 @@ class UI {
 
       let dayBookings = `<ul class="day-container__details">`;
 
+      //   console.log(e.data);
       for (const booking of e.data) {
         dayBookings += this.createBookingHTML(booking);
       }
@@ -479,5 +481,41 @@ class UI {
   }
 }
 
-// const ui1 = new UI("2025");
-const ui2 = new UI("2023-11");
+// const ui = new UI("2023");
+const ui = new UI("2023-11");
+
+ui.doms.allDaysContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("day-container__details_booking")) {
+    const index = +e.target.getAttribute("index");
+    ui.increase(index);
+
+    // Transmit data to Transaction Details page
+    // Jump to Transaction Details page
+  }
+});
+
+const mainContainer = document.querySelector(".main-container");
+const footer = document.querySelector("footer");
+let lastScrollTop = 0;
+window.addEventListener("scroll", function () {
+  const currentScrollTop = window.scrollY;
+  if (currentScrollTop > lastScrollTop) {
+    footer.style.display = "none";
+  } else {
+    footer.style.display = "flex";
+    // lastScrollTop = currentScrollTop;
+  }
+
+  lastScrollTop = currentScrollTop;
+  //   console.log(lastScrollTop, currentScrollTop);
+  console.log(currentScrollTop);
+
+  if (window.innerHeight + currentScrollTop >= document.body.offsetHeight) {
+    console.log("bottom");
+    footer.style.display = "flex";
+  }
+});
+
+// console.log(mainContainer.scrollHeight);
+// console.log(mainContainer.offsetHeight);
+// console.log(window.innerHeight);

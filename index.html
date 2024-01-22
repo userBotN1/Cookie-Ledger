@@ -27,55 +27,58 @@
       <div class="month-year-details">09/01/2023 - 09/30/2023</div>
     </header>
 
-    <div class="expense-income-container">
-      <div class="expense-income-container__expense">
-        <span class="expense-income-container__expense_emoji">💸</span>
-        <span class="expense-income-container__expense_desc">Expenditure</span>
-        <span class="expense-income-container__expense_value">$2,988.96</span>
-      </div>
-      <div class="expense-income-container__income">
-        <span class="expense-income-container__income_emoji">💰</span>
-        <span class="expense-income-container__income_desc">Income</span>
-        <span class="expense-income-container__income_value">$0</span>
-      </div>
-    </div>
-
-    <div class="all-days-container">
-      <div class="day-container">
-        <div class="day-container__title">
-          <span class="day-container__date">Thursday, Sept. 28th</span>
-          <span class="day-container__total-expense numbers">💸 $14.92</span>
-          <span class="day-container__total-income numbers"> 💰 $2,232 </span>
+    <div class="main-container">
+      <div class="expense-income-container">
+        <div class="expense-income-container__expense">
+          <span class="expense-income-container__expense_emoji">💸</span>
+          <span class="expense-income-container__expense_desc"
+            >Expenditure</span
+          >
+          <span class="expense-income-container__expense_value">$2,988.96</span>
         </div>
-        <ul class="day-container__details">
-          <li>
-            <span class="day-container__details-emoji">🚌</span>
-            <span class="day-container__details-category"
-              >Grocery Shopping</span
-            >
-            <span class="day-container__details-time">17:51</span>
-            <span class="day-container__details-amount numbers">-$29.13</span>
-          </li>
-          <li>
-            <span class="day-container__details-emoji">🥘</span>
-            <span class="day-container__details-category"
-              >Grocery Shopping</span
-            >
-            <span class="day-container__details-time">17:51</span>
-            <span class="day-container__details-amount numbers">-$29.13</span>
-          </li>
-          <li>
-            <span class="day-container__details-emoji">🧻</span>
-            <span class="day-container__details-category"
-              >Grocery Shopping</span
-            >
-            <span class="day-container__details-time">17:51</span>
-            <span class="day-container__details-amount numbers">-$29.13</span>
-          </li>
-        </ul>
+        <div class="expense-income-container__income">
+          <span class="expense-income-container__income_emoji">💰</span>
+          <span class="expense-income-container__income_desc">Income</span>
+          <span class="expense-income-container__income_value">$0</span>
+        </div>
       </div>
 
-      <!-- <div class="day-container">
+      <div class="all-days-container">
+        <div class="day-container">
+          <div class="day-container__title">
+            <span class="day-container__date">Thursday, Sept. 28th</span>
+            <span class="day-container__total-expense numbers">💸 $14.92</span>
+            <span class="day-container__total-income numbers"> 💰 $2,232 </span>
+          </div>
+          <ul class="day-container__details">
+            <li class="day-container__details_booking">
+              <span class="day-container__details-emoji">🚌</span>
+              <span class="day-container__details-category"
+                >Grocery Shopping</span
+              >
+              <span class="day-container__details-time">17:51</span>
+              <span class="day-container__details-amount numbers">-$29.13</span>
+            </li>
+            <li class="day-container__details_booking">
+              <span class="day-container__details-emoji">🥘</span>
+              <span class="day-container__details-category"
+                >Grocery Shopping</span
+              >
+              <span class="day-container__details-time">17:51</span>
+              <span class="day-container__details-amount numbers">-$29.13</span>
+            </li>
+            <li class="day-container__details_booking">
+              <span class="day-container__details-emoji">🧻</span>
+              <span class="day-container__details-category"
+                >Grocery Shopping</span
+              >
+              <span class="day-container__details-time">17:51</span>
+              <span class="day-container__details-amount numbers">-$29.13</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- <div class="day-container">
         <div class="day-container__title">
           <span class="day-container__date">Thursday, Sep. 28th</span>
           <span class="day-container__total-expense numbers">💸 $14.92</span>
@@ -101,7 +104,7 @@
         </ul>
       </div> -->
 
-      <!-- <div class="day-container">
+        <!-- <div class="day-container">
         <div class="day-container__title">
           <span class="day-container__date">Thursday, Sep. 28th</span>
           <span class="day-container__total-expense numbers">💸 $14.92</span>
@@ -119,7 +122,7 @@
         </ul>
       </div> -->
 
-      <!-- <div class="day-container">
+        <!-- <div class="day-container">
         <div class="day-container__title">
           <span class="day-container__date">Thursday, Sep. 28th</span>
           <span class="day-container__total-expense numbers">💸 $14.92</span>
@@ -145,7 +148,7 @@
         </ul>
       </div> -->
 
-      <!-- <div class="day-container">
+        <!-- <div class="day-container">
         <div class="day-container__title">
           <span class="day-container__date">Thursday, Sep. 28th</span>
           <span class="day-container__total-expense numbers">💸 $14.92</span>
@@ -163,7 +166,7 @@
         </ul>
       </div> -->
 
-      <!-- <div class="day-container">
+        <!-- <div class="day-container">
         <div class="day-container__title">
           <span class="day-container__date">Thursday, Sep. 28th</span>
           <span class="day-container__total-expense numbers">💸 $14.92</span>
@@ -196,9 +199,10 @@
           </li>
         </ul>
       </div> -->
+      </div>
     </div>
 
-    <footer>
+    <footer class="footer-deactive">
       <div>
         <span><img src="./assets/details.svg" alt="Details Icon" /></span>
         <span>Details</span>
