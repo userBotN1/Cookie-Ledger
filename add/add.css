@@ -10,27 +10,49 @@
 
 /* --------------- HEADER LAYOUT --------------- */
 header {
-  margin: 1.1em 1rem;
+  margin: 1.4em 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
 }
 
-.header__img {
-  padding: 8px;
+.header__home-btn {
+  border: none;
   background-color: rgba(244, 244, 243, 255);
   border-radius: 20px;
+  padding: 6px 8px;
+  position: absolute;
+  left: 0;
+}
+
+.header__main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 190px;
 }
 
 .header__title {
   font-size: 1.2em;
   font-weight: bold;
-  font-size: 1.2em;
-  font-weight: bold;
 }
 
-.header__place-holder {
-  width: 10px;
+.header__left-btn,
+.header__right-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.header__left-btn {
+  position: absolute;
+  left: 0;
+}
+
+.header__right-btn {
+  position: absolute;
+  right: 0;
 }
 
 /* --------------- MAIN CONTAINER LAYOUT --------------- */
