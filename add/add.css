@@ -64,6 +64,15 @@ header {
   row-gap: 20px;
 }
 
+.main-container .main-container__expenditure,
+.main-container .main-container__income {
+  display: none;
+}
+
+.slides > div.displayCategory {
+  display: block;
+}
+
 /* --------------- CATEGORY CONTAINER LAYOUT --------------- */
 .category-container {
   display: flex;
