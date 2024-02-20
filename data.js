@@ -22,83 +22,83 @@
 const categories = {
   housing: {
     emoji: "🏠",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   gift: {
     emoji: "🎁",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   others: {
     emoji: "🎃",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   dining: {
     emoji: "🍽",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   transportation: {
     emoji: "🚌",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   grocery: {
     emoji: "🧻",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   game: {
     emoji: "🎮",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   clothing: {
     emoji: "👗",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   travel: {
     emoji: "✈️",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   hotel: {
     emoji: "🏨",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   pet: {
     emoji: "🐶",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   transfer: {
     emoji: "💸",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   study: {
     emoji: "💡",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   medical: {
     emoji: "🏥",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   creative: {
     emoji: "🤯",
-    isExpenditure: false,
+    isExpenditure: true,
   },
   refund: {
     emoji: "🤑",
-    isExpenditure: true,
+    isExpenditure: false,
   },
   wage: {
     emoji: "💰",
-    isExpenditure: true,
+    isExpenditure: false,
   },
   transfer: {
     emoji: "💸",
-    isExpenditure: true,
+    isExpenditure: false,
   },
   partTime: {
-    emoji: "👨‍💻👨",
-    isExpenditure: true,
+    emoji: "👨‍💻",
+    isExpenditure: false,
   },
   wealthManagement: {
     emoji: "🧾",
-    isExpenditure: true,
+    isExpenditure: false,
   },
 };
 

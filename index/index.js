@@ -1,7 +1,7 @@
 /* --------------- DATA PROCESSING --------------- */
 class Booking {
   constructor(e) {
-    // this.emoji = categories[e.category];
+    // this.emoji = categories[e.category]; outdated way of getting emoji
     this.emoji = categories[e.category].emoji;
     this.category = e.category;
     this.time = new Date(e.time);
@@ -485,6 +485,7 @@ class UI {
 // const ui = new UI("2023");
 const ui = new UI("2023-11");
 
+/* --------------- INTERACTION --------------- */
 ui.doms.allDaysContainer.addEventListener("click", function (e) {
   if (e.target.classList.contains("day-container__details_booking")) {
     const index = +e.target.getAttribute("index");
