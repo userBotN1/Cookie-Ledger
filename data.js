@@ -1,19 +1,105 @@
+/**
+ * Outdated categories data which does not have isExpenditure property
+ */
+// const categories = {
+//   housing: "🏠",
+//   gift: "🎁",
+//   others: "🎃",
+//   dining: "🍽",
+//   transportation: "🚌",
+//   grocery: "🧻",
+//   game: "🎮",
+//   clothing: "👗",
+//   travel: "✈️",
+//   hotel: "🏨",
+//   pet: "🐶",
+//   transfer: "💸",
+//   study: "💡",
+//   medical: "🏥",
+//   creative: "🤯",
+// };
+
 const categories = {
-  housing: "🏠",
-  gift: "🎁",
-  others: "🎃",
-  dining: "🍽",
-  transportation: "🚌",
-  grocery: "🧻",
-  game: "🎮",
-  clothing: "👗",
-  travel: "✈️",
-  hotel: "🏨",
-  pet: "🐶",
-  transfer: "💸",
-  study: "💡",
-  medical: "🏥",
-  creative: "🤯",
+  housing: {
+    emoji: "🏠",
+    isExpenditure: false,
+  },
+  gift: {
+    emoji: "🎁",
+    isExpenditure: false,
+  },
+  others: {
+    emoji: "🎃",
+    isExpenditure: false,
+  },
+  dining: {
+    emoji: "🍽",
+    isExpenditure: false,
+  },
+  transportation: {
+    emoji: "🚌",
+    isExpenditure: false,
+  },
+  grocery: {
+    emoji: "🧻",
+    isExpenditure: false,
+  },
+  game: {
+    emoji: "🎮",
+    isExpenditure: false,
+  },
+  clothing: {
+    emoji: "👗",
+    isExpenditure: false,
+  },
+  travel: {
+    emoji: "✈️",
+    isExpenditure: false,
+  },
+  hotel: {
+    emoji: "🏨",
+    isExpenditure: false,
+  },
+  pet: {
+    emoji: "🐶",
+    isExpenditure: false,
+  },
+  transfer: {
+    emoji: "💸",
+    isExpenditure: false,
+  },
+  study: {
+    emoji: "💡",
+    isExpenditure: false,
+  },
+  medical: {
+    emoji: "🏥",
+    isExpenditure: false,
+  },
+  creative: {
+    emoji: "🤯",
+    isExpenditure: false,
+  },
+  refund: {
+    emoji: "🤑",
+    isExpenditure: true,
+  },
+  wage: {
+    emoji: "💰",
+    isExpenditure: true,
+  },
+  transfer: {
+    emoji: "💸",
+    isExpenditure: true,
+  },
+  partTime: {
+    emoji: "👨‍💻👨",
+    isExpenditure: true,
+  },
+  wealthManagement: {
+    emoji: "🧾",
+    isExpenditure: true,
+  },
 };
 
 const monthIndex = {

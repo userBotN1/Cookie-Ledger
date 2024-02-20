@@ -59,9 +59,6 @@ header {
 .main-container {
   margin: auto 1rem;
   margin-bottom: 1.1em;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap: 20px;
 }
 
 .main-container .main-container__expenditure,
@@ -70,7 +67,9 @@ header {
 }
 
 .slides > div.displayCategory {
-  display: block;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 20px;
 }
 
 /* --------------- CATEGORY CONTAINER LAYOUT --------------- */

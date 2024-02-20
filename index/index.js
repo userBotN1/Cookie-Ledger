@@ -1,7 +1,8 @@
 /* --------------- DATA PROCESSING --------------- */
 class Booking {
   constructor(e) {
-    this.emoji = categories[e.category];
+    // this.emoji = categories[e.category];
+    this.emoji = categories[e.category].emoji;
     this.category = e.category;
     this.time = new Date(e.time);
     this.value = e.value;
@@ -508,10 +509,10 @@ window.addEventListener("scroll", function () {
 
   lastScrollTop = currentScrollTop;
   //   console.log(lastScrollTop, currentScrollTop);
-  console.log(currentScrollTop);
+  // console.log(currentScrollTop);
 
   if (window.innerHeight + currentScrollTop >= document.body.offsetHeight) {
-    console.log("bottom");
+    // console.log("bottom");
     footer.style.display = "flex";
   }
 });
