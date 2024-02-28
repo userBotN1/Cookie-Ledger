@@ -125,11 +125,33 @@ function closeCalculator() {
   ui.doms.calculatorContainer.classList.add("hidden");
   ui.doms.overlay.classList.add("hidden");
 }
-function processRecord(category) {
-  console.log(category);
-  ui.doms.calculatorContainer.classList.remove("hidden");
-  ui.doms.overlay.classList.remove("hidden");
-  console.log(ui.doms.calculatorContainer);
+
+function processDetailsAddAmount() {
+  // final amount cannot be <= 0
+  // [+, 3, 2]
+  // [-, 6] edge case where final amount cannot be <= 0
+  // [6, +, 3, -, 1, ., 2, +, 1]
+  for (el of operations) {
+    console.log(el);
+  }
+  operations.length = 0;
+  console.log(operations);
+}
+
+const operations = [];
+function processDetails(event) {
+  let clickArea = event.target.tagName;
+  if (clickArea === "BUTTON") {
+    clickArea = event.target.closest("button");
+    const operation = clickArea.textContent;
+
+    if (operation === "ADD") {
+      console.log("Operations recorded: ", operations);
+      return processDetailsAddAmount();
+    } else {
+      operations.push(operation);
+    }
+  }
 }
 
 function initializeRecord(event) {
@@ -137,11 +159,15 @@ function initializeRecord(event) {
   if (clickArea === "SPAN" || clickArea === "BUTTON") {
     clickArea = event.target.closest(".category-container__btn");
     const category = clickArea.nextElementSibling.textContent;
-    processRecord(category);
+    ui.doms.calculatorContainer.classList.remove("hidden");
+    ui.doms.overlay.classList.remove("hidden");
   }
 }
 
 ui.doms.expenditureDiv.addEventListener("click", initializeRecord);
 ui.doms.incomeDiv.addEventListener("click", initializeRecord);
+
+ui.doms.calculatorContainer.addEventListener("click", processDetails);
+
 ui.doms.overlay.addEventListener("click", closeCalculator);
 
