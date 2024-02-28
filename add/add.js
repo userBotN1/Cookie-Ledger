@@ -19,6 +19,13 @@ class UI {
 
     this.categoryData = categoryData;
     this.createCategoryHTML();
+
+    this.doms = {
+      slides: document.querySelectorAll(".slides > div"),
+      categoryTitle: document.querySelector(".header__title"),
+      leftBtn: document.querySelector(".header__left-btn"),
+      rightBtn: document.querySelector(".header__right-btn"),
+    };
   }
 
   /**
@@ -72,37 +79,40 @@ class UI {
 const ui = new UI();
 
 /* --------------- INTERACTION --------------- */
-const slides = document.querySelectorAll(".slides > div");
+
+/**
+ * Implement sliding between expenditure and income divs
+ */
 let categoryIndex = 0;
 function initializeCategory() {
-  slides[categoryIndex].classList.add("displayCategory");
+  ui.doms.slides[categoryIndex].classList.add("displayCategory");
 }
 
 function showCategory(categoryDesc) {
-  if (0 <= categoryIndex && categoryIndex < slides.length) {
-    slides.forEach((slide) => {
+  if (0 <= categoryIndex && categoryIndex < ui.doms.slides.length) {
+    ui.doms.slides.forEach((slide) => {
       slide.classList.remove("displayCategory");
     });
 
-    slides[categoryIndex].classList.add("displayCategory");
-    categoryTitle.textContent = categoryDesc;
+    ui.doms.slides[categoryIndex].classList.add("displayCategory");
+    ui.doms.categoryTitle.textContent = categoryDesc;
   }
 }
 
 function prevCategory() {
-  categoryIndex--;
+  categoryIndex = 0;
   showCategory("Expenditure");
 }
 
 function nextCategory() {
-  categoryIndex++;
+  categoryIndex = 1;
   showCategory("Income");
 }
 
-const categoryTitle = document.querySelector(".header__title");
-const leftBtn = document.querySelector(".header__left-btn");
-const rightBtn = document.querySelector(".header__right-btn");
-
-leftBtn.addEventListener("click", prevCategory);
-rightBtn.addEventListener("click", nextCategory);
+ui.doms.leftBtn.addEventListener("click", prevCategory);
+ui.doms.rightBtn.addEventListener("click", nextCategory);
 document.addEventListener("DOMContentLoaded", initializeCategory);
+
+// main_container__income;
+// main_conatiner__expenditure;
+
