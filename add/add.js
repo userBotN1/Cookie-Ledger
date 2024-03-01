@@ -122,13 +122,33 @@ function closeCalculator() {
   ui.doms.overlay.classList.add("hidden");
 }
 
+/**
+ * Converts an array of characters into corresponding numerical value
+ * @param {array} arr - An array of characters storing a single number
+ * @returns {number} The numerical value
+ *
+ * @example
+ * // Returns: 3
+ * arr = ["3"];
+ *
+ * @example
+ * // Returns: 0.2
+ * arr = [".", "2"];
+ *
+ * * @example
+ * // Returns: 0
+ * arr = ['.']
+ *
+ * * @example
+ * // Returns: 321.155
+ * arr = ["3", "2", "1", ".", "1", "5", "5"];
+ *
+ * * @example
+ * // Returns: 321155
+ * arr = ["3", "2", "1", "1", "5", "5"];
+ *
+ */
 function computeNumbers(arr) {
-  // test = ["3"];
-  // test = [".", "2"];
-  // test = ['.']
-  // test = ["3", "2", "1", ".", "1", "5", "5"];
-  // test = ["3", "2", "1", "1", "5", "5"];
-
   // 0. Edge case
   if (arr.length === 1 && arr[0] === ".") {
     return 0;
@@ -171,83 +191,101 @@ function computeNumbers(arr) {
   return intPart + decimalPart;
 }
 
+/**
+ * Calculates the numerical value for a bookkeeping based on user inputs on the calculator
+ * @param {array} operations - An gloabl variable array stroing user inputs on the calculator
+ * @returns {number} The numerical value for a bookkeeping
+ *
+ * @example
+ * // Returns: 3.2
+ * operations = ["+", "3", "+", "+", ".", "2", "+", ".", ".", ".", "."];
+ *
+ * @example
+ * // Returns: 5.77
+ * operations = ["6", "+", "-", "1", ".", "2", "3", "+", "1"];
+ *
+ * * @example
+ * // Returns: 8.8
+ * operations = ["6", "+", "3", "-", "1", ".", "2", "+", "1"];
+ *
+ * * @example
+ * // Returns: 6.8
+ * operations = ["6", "+", "3", "-", "1", ".", "2", "-", "1"];
+ *
+ * * @example
+ * // Returns: 0
+ * operations = ["-", ".", "+", "+", "+", ".", "-"];
+ *
+ * * * @example
+ * // Returns: 2.8
+ * operations = ["-", ".", "0", "2", "+", "3"];
+ */
 function processDetailsAddAmount() {
-  // final amount cannot be <= 0
-  // [+, 3, 2]
-  // [-, 6] edge case where final amount cannot be <= 0
-  // [6, +, 3, -, 1, ., 2, +, 1]
-
-  // const test = ["+", "3", "+", "+", ".", "2", "+", ".", ".", ".", "."];
-  // const test = ["6", "+", "-", "1", ".", "2", "3", "+", "1"];
-  // const test = ["6", "+", "3", "-", "1", ".", "2", "+", "1"];
-  const test = ["6", "+", "3", "-", "1", ".", "2", "-", "1"];
-  // const test = ["-", ".", "+", "+", "+", ".", "-"];
-
-  // 1. Clean up incoming array (remove +/- that are redundant, at first place, or at last place)
-  let testClean = [];
+  // 1. Clean up incoming array
+  let operationsClean = [];
   let i = 0;
 
-  if (test[0] === "+" || test[0] === "-") {
-    i++;
+  if (operations[0] === "+" || operations[0] === "-") {
+    operations.unshift("0");
   }
 
-  while (i < test.length) {
-    if (test[i] === "+" || test[i] === "-") {
+  while (i < operations.length) {
+    if (operations[i] === "+" || operations[i] === "-") {
       let k = i + 1;
-      while (k < test.length && (test[k] === "+" || test[k] === "-")) {
+      while (
+        k < operations.length &&
+        (operations[k] === "+" || operations[k] === "-")
+      ) {
         k++;
       }
-      testClean.push(test[k - 1]);
+      operationsClean.push(operations[k - 1]);
       i = k - 1;
-    } else if (test[i] === ".") {
+    } else if (operations[i] === ".") {
       let k = i + 1;
-      while (k < test.length && test[k] === ".") {
+      while (k < operations.length && operations[k] === ".") {
         k++;
       }
-      testClean.push(test[k - 1]);
+      operationsClean.push(operations[k - 1]);
       i = k - 1;
     } else {
-      testClean.push(test[i]);
+      operationsClean.push(operations[i]);
     }
     i++;
   }
 
   if (
-    testClean[testClean.length - 1] === "+" ||
-    testClean[testClean.length - 1] === "-"
+    operationsClean[operationsClean.length - 1] === "+" ||
+    operationsClean[operationsClean.length - 1] === "-"
   ) {
-    testClean = testClean.slice(0, -1);
+    operationsClean = operationsClean.slice(0, -1);
   }
 
-  // 2. Check is testClean contains valid operations (not valid: [.], [])
-  // ['.', '+', '.'] should be valid, check value after doing calculation
+  // 2. Check if operationsClean contains valid operations
+  // [.], [] are not valid
+  // ['.', '+', '.'] is valid (check numerical value after calculation)
   if (
-    testClean === null ||
-    testClean.length === 0 ||
-    (testClean.length === 1 && testClean[0] === ".")
+    operationsClean === null ||
+    operationsClean.length === 0 ||
+    (operationsClean.length === 1 && operationsClean[0] === ".")
   ) {
     return -1; // return negative value
   }
 
-  console.log(test);
-  console.log(testClean);
-  console.log("");
-
   // 3. Process Numbers
   let m = 0;
   let numStack = [];
-  while (m < testClean.length) {
-    if (testClean[m] === "+" || testClean[m] === "-") {
+  while (m < operationsClean.length) {
+    if (operationsClean[m] === "+" || operationsClean[m] === "-") {
       m++;
     } else {
       const numArr = [];
       let n = m;
       while (
-        n < testClean.length &&
-        testClean[n] !== "+" &&
-        testClean[n] !== "-"
+        n < operationsClean.length &&
+        operationsClean[n] !== "+" &&
+        operationsClean[n] !== "-"
       ) {
-        numArr.push(testClean[n]);
+        numArr.push(operationsClean[n]);
         n++;
       }
       m = n;
@@ -256,26 +294,34 @@ function processDetailsAddAmount() {
     }
   }
 
-  // 5. Math operation
+  // 4. Math operation
   let operatorStack = [];
-  for (let i = 0; i < testClean.length; i++) {
-    if (testClean[i] === "+" || testClean[i] === "-") {
-      operatorStack.push(testClean[i]);
+  for (let i = 0; i < operationsClean.length; i++) {
+    if (operationsClean[i] === "+" || operationsClean[i] === "-") {
+      operatorStack.push(operationsClean[i]);
     }
   }
 
   operatorStack = operatorStack.reverse();
   numStack = numStack.reverse();
 
-  console.log(operatorStack);
-  console.log(numStack);
-  const random = numStack.pop();
-  console.log(random);
-  console.log(numStack);
+  while (numStack.length !== 0 && operatorStack.length !== 0) {
+    const a = numStack.pop();
+    const b = numStack.pop();
+    const operator = operatorStack.pop();
+    let tempRes = 0;
+    if (operator === "+") {
+      tempRes = a + b;
+    } else if (operator === "-") {
+      tempRes = a - b;
+    }
+    numStack.push(tempRes);
+  }
 
-  // 4. Clean up operations for future use
+  // 5. Clean up operations for future use
   operations.length = 0;
-  // console.log(operations);
+  const finalRes = numStack.pop();
+  return finalRes;
 }
 
 const operations = [];
@@ -287,7 +333,7 @@ function processDetails(event) {
 
     if (operation === "ADD") {
       console.log("Operations recorded: ", operations);
-      const value = processDetailsAddAmount();
+      const value = processDetailsAddAmount(); // final amount cannot be <= 0
       console.log(value);
     } else {
       operations.push(operation);
