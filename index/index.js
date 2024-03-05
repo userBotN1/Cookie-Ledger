@@ -1,3 +1,18 @@
+const categoriesString = localStorage.getItem("categories");
+const categories = JSON.parse(categoriesString);
+
+const monthIndexString = localStorage.getItem("monthIndex");
+const monthIndex = JSON.parse(monthIndexString);
+
+const fullMonthIndexString = localStorage.getItem("fullMonthIndex");
+const fullMonthIndex = JSON.parse(fullMonthIndexString);
+
+const dayIndexString = localStorage.getItem("dayIndex");
+const dayIndex = JSON.parse(dayIndexString);
+
+const bookingsString = localStorage.getItem("bookings");
+const bookings = JSON.parse(bookingsString);
+
 /* --------------- DATA PROCESSING --------------- */
 class Booking {
   constructor(e) {
@@ -483,7 +498,7 @@ class UI {
 }
 
 // const ui = new UI("2023");
-const ui = new UI("2023-11");
+const ui = new UI("2024-03");
 
 /* --------------- INTERACTION --------------- */
 ui.doms.allDaysContainer.addEventListener("click", function (e) {
@@ -521,3 +536,4 @@ window.addEventListener("scroll", function () {
 // console.log(mainContainer.scrollHeight);
 // console.log(mainContainer.offsetHeight);
 // console.log(window.innerHeight);
+

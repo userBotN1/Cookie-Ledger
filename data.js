@@ -1999,3 +1999,20 @@ const bookings = [
     isExpenditure: true,
   },
 ];
+
+// export { bookings, categories };
+
+const categoriesString = JSON.stringify(categories);
+localStorage.setItem("categories", categoriesString);
+
+const monthIndexString = JSON.stringify(monthIndex);
+localStorage.setItem("monthIndex", monthIndexString);
+
+const fullMonthIndexString = JSON.stringify(fullMonthIndex);
+localStorage.setItem("fullMonthIndex", fullMonthIndexString);
+
+const dayIndexString = JSON.stringify(dayIndex);
+localStorage.setItem("dayIndex", dayIndexString);
+
+const bookingsString = JSON.stringify(bookings);
+localStorage.setItem("bookings", bookingsString);

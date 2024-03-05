@@ -1,9 +1,24 @@
+const bookingsString = localStorage.getItem("bookings");
+const bookings = JSON.parse(bookingsString);
+
+const categoriesString = localStorage.getItem("categories");
+const categories = JSON.parse(categoriesString);
+
 /* --------------- DATA PROCESSING --------------- */
 class Category {
   constructor(e) {
     this.emoji = categories[e].emoji;
     this.categoryName = e;
     this.isExpenditure = categories[e].isExpenditure;
+  }
+}
+
+class Booking {
+  constructor(category, time, value, isExpenditure) {
+    this.category = category;
+    this.time = time;
+    this.value = value;
+    this.isExpenditure = isExpenditure;
   }
 }
 
@@ -23,8 +38,9 @@ class UI {
     // Interaction
     this.categoryIndex = 0;
     this.category = "";
-    this.operations = [];
     this.value = 0;
+    this.isExpenditure;
+    this.operations = [];
 
     // DOM selection
     this.doms = {
@@ -122,7 +138,8 @@ class UI {
    * This function servers as an entry point where user can initialize the process of adding a bookkeeping
    * The function updates variable "this.category"
    */
-  initializeRecord(event) {
+  initializeRecord(event, isExpenditure) {
+    this.isExpenditure = isExpenditure;
     let clickArea = event.target.tagName;
     if (clickArea === "SPAN" || clickArea === "BUTTON") {
       clickArea = event.target.closest(".category-container__btn");
@@ -355,7 +372,8 @@ class UI {
           alert("Amount cannot be less than or equal to 0");
         } else {
           this.value = value;
-          this.initializeNewBookkeeping();
+          this.addNewBooking();
+          this.closeCalculator();
         }
       } else {
         this.operations.push(operation);
@@ -368,11 +386,31 @@ class UI {
     this.doms.overlay.classList.add("hidden");
   }
 
-  initializeNewBookkeeping() {
-    console.log("Operations recorded: ", this.operations);
-    console.log(this.value);
-    console.log(this.category);
-    // const newBookkeeping =
+  addNewBooking() {
+    const currentTime = new Date();
+    const year = currentTime.getFullYear().toString();
+    const month = (currentTime.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentTime.getDate().toString().padStart(2, "0");
+    const hour = currentTime.getHours().toString().padStart(2, "0");
+    const minute = currentTime.getMinutes().toString().padStart(2, "0");
+    const second = currentTime.getSeconds().toString().padStart(2, "0");
+    const millisecond = currentTime
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0");
+    const formatTime = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`;
+
+    const newBooking = new Booking(
+      this.category,
+      formatTime,
+      this.value,
+      this.isExpenditure
+    );
+
+    bookings.push(newBooking);
+
+    const updatedBookingsString = JSON.stringify(bookings);
+    localStorage.setItem("bookings", updatedBookingsString);
   }
 }
 const ui = new UI();
@@ -385,8 +423,12 @@ ui.doms.leftBtn.addEventListener("click", ui.prevCategory.bind(ui));
 ui.doms.rightBtn.addEventListener("click", ui.nextCategory.bind(ui));
 
 /* --------------- Selecting a Category & Open Calculator --------------- */
-ui.doms.expenditureDiv.addEventListener("click", ui.initializeRecord.bind(ui));
-ui.doms.incomeDiv.addEventListener("click", ui.initializeRecord.bind(ui));
+ui.doms.expenditureDiv.addEventListener("click", (event) =>
+  ui.initializeRecord(event, true)
+);
+ui.doms.incomeDiv.addEventListener("click", (event) =>
+  ui.initializeRecord(event, false)
+);
 ui.doms.calculatorContainer.addEventListener(
   "click",
   ui.processDetails.bind(ui)
