@@ -20,6 +20,8 @@ class UI {
     this.categoryData = categoryData;
     this.createCategoryHTML();
 
+    this.categoryIndex = 0;
+
     this.doms = {
       slides: document.querySelectorAll(".slides > div"),
       categoryTitle: document.querySelector(".header__title"),
@@ -79,41 +81,44 @@ class UI {
     document.querySelector(".slides").innerHTML =
       expenditureTemplate + incomeTemplate;
   }
+
+  /* --------------- Sliding Between Expenditure/Income Divs --------------- */
+  initializeCategory() {
+    this.doms.slides[this.categoryIndex].classList.add("displayCategory");
+  }
+
+  showCategory(categoryDesc) {
+    if (
+      0 <= this.categoryIndex &&
+      this.categoryIndex < this.doms.slides.length
+    ) {
+      this.doms.slides.forEach((slide) => {
+        slide.classList.remove("displayCategory");
+      });
+
+      this.doms.slides[this.categoryIndex].classList.add("displayCategory");
+      this.doms.categoryTitle.textContent = categoryDesc;
+    }
+  }
+
+  prevCategory() {
+    this.categoryIndex = 0;
+    this.showCategory("Expenditure");
+  }
+
+  nextCategory() {
+    this.categoryIndex = 1;
+    this.showCategory("Income");
+  }
+
+  /* --------------- Selecting a Category & Open Calculator --------------- */
 }
 const ui = new UI();
 
 /* --------------- INTERACTION --------------- */
-
-/* --------------- Sliding Between Expenditure/Income Divs --------------- */
-let categoryIndex = 0;
-function initializeCategory() {
-  ui.doms.slides[categoryIndex].classList.add("displayCategory");
-}
-
-function showCategory(categoryDesc) {
-  if (0 <= categoryIndex && categoryIndex < ui.doms.slides.length) {
-    ui.doms.slides.forEach((slide) => {
-      slide.classList.remove("displayCategory");
-    });
-
-    ui.doms.slides[categoryIndex].classList.add("displayCategory");
-    ui.doms.categoryTitle.textContent = categoryDesc;
-  }
-}
-
-function prevCategory() {
-  categoryIndex = 0;
-  showCategory("Expenditure");
-}
-
-function nextCategory() {
-  categoryIndex = 1;
-  showCategory("Income");
-}
-
-ui.doms.leftBtn.addEventListener("click", prevCategory);
-ui.doms.rightBtn.addEventListener("click", nextCategory);
-document.addEventListener("DOMContentLoaded", initializeCategory);
+document.addEventListener("DOMContentLoaded", ui.initializeCategory.bind(ui));
+ui.doms.leftBtn.addEventListener("click", ui.prevCategory.bind(ui));
+ui.doms.rightBtn.addEventListener("click", ui.nextCategory.bind(ui));
 
 /* --------------- Selecting a Category & Open Calculator --------------- */
 
@@ -334,6 +339,10 @@ function processDetails(event) {
     if (operation === "ADD") {
       console.log("Operations recorded: ", operations);
       const value = processDetailsAddAmount(); // final amount cannot be <= 0
+      if (value <= 0) {
+        alert("Amount cannot be less than or equal to 0");
+      }
+
       console.log(value);
     } else {
       operations.push(operation);
@@ -346,6 +355,7 @@ function initializeRecord(event) {
   if (clickArea === "SPAN" || clickArea === "BUTTON") {
     clickArea = event.target.closest(".category-container__btn");
     const category = clickArea.nextElementSibling.textContent;
+    console.log(category);
     ui.doms.calculatorContainer.classList.remove("hidden");
     ui.doms.overlay.classList.remove("hidden");
   }
