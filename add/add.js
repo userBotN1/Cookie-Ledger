@@ -20,8 +20,13 @@ class UI {
     this.categoryData = categoryData;
     this.createCategoryHTML();
 
+    // Interaction
     this.categoryIndex = 0;
+    this.category = "";
+    this.operations = [];
+    this.value = 0;
 
+    // DOM selection
     this.doms = {
       slides: document.querySelectorAll(".slides > div"),
       categoryTitle: document.querySelector(".header__title"),
@@ -111,260 +116,280 @@ class UI {
     this.showCategory("Income");
   }
 
-  /* --------------- Selecting a Category & Open Calculator --------------- */
+  /* --------------- Adding a bookkeeping --------------- */
+
+  /**
+   * This function servers as an entry point where user can initialize the process of adding a bookkeeping
+   * The function updates variable "this.category"
+   */
+  initializeRecord(event) {
+    let clickArea = event.target.tagName;
+    if (clickArea === "SPAN" || clickArea === "BUTTON") {
+      clickArea = event.target.closest(".category-container__btn");
+      this.category = clickArea.nextElementSibling.textContent;
+
+      ui.doms.calculatorContainer.classList.remove("hidden");
+      ui.doms.overlay.classList.remove("hidden");
+    }
+  }
+
+  /**
+   * Converts an array of characters into corresponding numerical value
+   * @param {array} arr - An array of characters storing a single number
+   * @returns {number} The numerical value
+   *
+   * @example
+   * // Returns: 3
+   * arr = ["3"];
+   *
+   * @example
+   * // Returns: 0.2
+   * arr = [".", "2"];
+   *
+   * * @example
+   * // Returns: 0
+   * arr = ['.']
+   *
+   * * @example
+   * // Returns: 321.155
+   * arr = ["3", "2", "1", ".", "1", "5", "5"];
+   *
+   * * @example
+   * // Returns: 321155
+   * arr = ["3", "2", "1", "1", "5", "5"];
+   *
+   */
+  computeNumbers(arr) {
+    // 0. Edge case
+    if (arr.length === 1 && arr[0] === ".") {
+      return 0;
+    }
+
+    // 1. Get the integer part of the number and count how many digits there is
+    let counter = 0;
+    let intPart = 0;
+
+    while (counter < arr.length && arr[counter] !== ".") {
+      counter++;
+    }
+
+    const intPartArr = arr.slice(0, counter);
+    const decimalPartArr = arr.slice(counter + 1, arr.length);
+    counter -= 1;
+
+    for (let i = 0; i < intPartArr.length; i++) {
+      intPart += intPartArr[i] * 10 ** counter;
+      counter--;
+    }
+
+    // 2. Check if the number contains decimal parts. If not, early return
+    if (arr.length - intPartArr.length === 0) {
+      return intPart;
+    }
+
+    // 3. Get the decimal part of the number and count how many decimal places there is
+    let counterDecimal = arr.length - intPartArr.length - 1;
+    let power = decimalPartArr.length - 1;
+    let decimalPart = 0;
+
+    for (let i = 0; i < decimalPartArr.length; i++) {
+      decimalPart += decimalPartArr[i] * 10 ** power;
+      power--;
+    }
+    decimalPart = decimalPart * (1 * 10 ** -counterDecimal);
+
+    // 4. Return final value
+    return intPart + decimalPart;
+  }
+
+  /**
+   * Calculates the numerical value for a bookkeeping based on user inputs on the calculator
+   * @param {array} operations - An gloabl variable array stroing user inputs on the calculator
+   * @returns {number} The numerical value for a bookkeeping
+   *
+   * @example
+   * // Returns: 3.2
+   * operations = ["+", "3", "+", "+", ".", "2", "+", ".", ".", ".", "."];
+   *
+   * @example
+   * // Returns: 5.77
+   * operations = ["6", "+", "-", "1", ".", "2", "3", "+", "1"];
+   *
+   * * @example
+   * // Returns: 8.8
+   * operations = ["6", "+", "3", "-", "1", ".", "2", "+", "1"];
+   *
+   * * @example
+   * // Returns: 6.8
+   * operations = ["6", "+", "3", "-", "1", ".", "2", "-", "1"];
+   *
+   * * @example
+   * // Returns: 0
+   * operations = ["-", ".", "+", "+", "+", ".", "-"];
+   *
+   * * * @example
+   * // Returns: 2.8
+   * operations = ["-", ".", "0", "2", "+", "3"];
+   */
+  processDetailsAddAmount() {
+    // 1. Clean up incoming array
+    let operationsClean = [];
+    let i = 0;
+
+    if (this.operations[0] === "+" || this.operations[0] === "-") {
+      this.operations.unshift("0");
+    }
+
+    while (i < this.operations.length) {
+      if (this.operations[i] === "+" || this.operations[i] === "-") {
+        let k = i + 1;
+        while (
+          k < this.operations.length &&
+          (this.operations[k] === "+" || this.operations[k] === "-")
+        ) {
+          k++;
+        }
+        operationsClean.push(this.operations[k - 1]);
+        i = k - 1;
+      } else if (this.operations[i] === ".") {
+        let k = i + 1;
+        while (k < this.operations.length && this.operations[k] === ".") {
+          k++;
+        }
+        operationsClean.push(this.operations[k - 1]);
+        i = k - 1;
+      } else {
+        operationsClean.push(this.operations[i]);
+      }
+      i++;
+    }
+
+    if (
+      operationsClean[operationsClean.length - 1] === "+" ||
+      operationsClean[operationsClean.length - 1] === "-"
+    ) {
+      operationsClean = operationsClean.slice(0, -1);
+    }
+
+    // 2. Check if operationsClean contains valid operations
+    // [.], [] are not valid
+    // ['.', '+', '.'] is valid (check numerical value after calculation)
+    if (
+      operationsClean === null ||
+      operationsClean.length === 0 ||
+      (operationsClean.length === 1 && operationsClean[0] === ".")
+    ) {
+      return -1; // return negative value
+    }
+
+    // 3. Process Numbers
+    let m = 0;
+    let numStack = [];
+    while (m < operationsClean.length) {
+      if (operationsClean[m] === "+" || operationsClean[m] === "-") {
+        m++;
+      } else {
+        const numArr = [];
+        let n = m;
+        while (
+          n < operationsClean.length &&
+          operationsClean[n] !== "+" &&
+          operationsClean[n] !== "-"
+        ) {
+          numArr.push(operationsClean[n]);
+          n++;
+        }
+        m = n;
+        const num = this.computeNumbers(numArr);
+        numStack.push(num);
+      }
+    }
+
+    // 4. Math operation
+    let operatorStack = [];
+    for (let i = 0; i < operationsClean.length; i++) {
+      if (operationsClean[i] === "+" || operationsClean[i] === "-") {
+        operatorStack.push(operationsClean[i]);
+      }
+    }
+
+    operatorStack = operatorStack.reverse();
+    numStack = numStack.reverse();
+
+    while (numStack.length !== 0 && operatorStack.length !== 0) {
+      const a = numStack.pop();
+      const b = numStack.pop();
+      const operator = operatorStack.pop();
+      let tempRes = 0;
+      if (operator === "+") {
+        tempRes = a + b;
+      } else if (operator === "-") {
+        tempRes = a - b;
+      }
+      numStack.push(tempRes);
+    }
+
+    // 5. Clean up operations for future use
+    this.operations.length = 0;
+    const finalRes = numStack.pop();
+    return finalRes;
+  }
+
+  /**
+   *
+   * @param {*} event
+   * This function listens to user events on the calculator.
+   * The function tracks user input and calls helper function to calculate the momentary amount for a bookkeeping
+   * The function updates this.operations[]
+   * The function updates variable "this.category"
+   */
+  processDetails(event) {
+    let clickArea = event.target.tagName;
+    if (clickArea === "BUTTON") {
+      clickArea = event.target.closest("button");
+      const operation = clickArea.textContent;
+
+      if (operation === "ADD") {
+        const value = this.processDetailsAddAmount(); // final amount cannot be <= 0
+        if (value <= 0) {
+          alert("Amount cannot be less than or equal to 0");
+        } else {
+          this.value = value;
+          this.initializeNewBookkeeping();
+        }
+      } else {
+        this.operations.push(operation);
+      }
+    }
+  }
+
+  closeCalculator() {
+    this.doms.calculatorContainer.classList.add("hidden");
+    this.doms.overlay.classList.add("hidden");
+  }
+
+  initializeNewBookkeeping() {
+    console.log("Operations recorded: ", this.operations);
+    console.log(this.value);
+    console.log(this.category);
+    // const newBookkeeping =
+  }
 }
 const ui = new UI();
 
 /* --------------- INTERACTION --------------- */
+
+/* --------------- Sliding Between Expenditure/Income Divs --------------- */
 document.addEventListener("DOMContentLoaded", ui.initializeCategory.bind(ui));
 ui.doms.leftBtn.addEventListener("click", ui.prevCategory.bind(ui));
 ui.doms.rightBtn.addEventListener("click", ui.nextCategory.bind(ui));
 
 /* --------------- Selecting a Category & Open Calculator --------------- */
-
-function closeCalculator() {
-  ui.doms.calculatorContainer.classList.add("hidden");
-  ui.doms.overlay.classList.add("hidden");
-}
-
-/**
- * Converts an array of characters into corresponding numerical value
- * @param {array} arr - An array of characters storing a single number
- * @returns {number} The numerical value
- *
- * @example
- * // Returns: 3
- * arr = ["3"];
- *
- * @example
- * // Returns: 0.2
- * arr = [".", "2"];
- *
- * * @example
- * // Returns: 0
- * arr = ['.']
- *
- * * @example
- * // Returns: 321.155
- * arr = ["3", "2", "1", ".", "1", "5", "5"];
- *
- * * @example
- * // Returns: 321155
- * arr = ["3", "2", "1", "1", "5", "5"];
- *
- */
-function computeNumbers(arr) {
-  // 0. Edge case
-  if (arr.length === 1 && arr[0] === ".") {
-    return 0;
-  }
-
-  // 1. Get the integer part of the number and count how many digits there is
-  let counter = 0;
-  let intPart = 0;
-
-  while (counter < arr.length && arr[counter] !== ".") {
-    counter++;
-  }
-
-  const intPartArr = arr.slice(0, counter);
-  const decimalPartArr = arr.slice(counter + 1, arr.length);
-  counter -= 1;
-
-  for (let i = 0; i < intPartArr.length; i++) {
-    intPart += intPartArr[i] * 10 ** counter;
-    counter--;
-  }
-
-  // 2. Check if the number contains decimal parts. If not, early return
-  if (arr.length - intPartArr.length === 0) {
-    return intPart;
-  }
-
-  // 3. Get the decimal part of the number and count how many decimal places there is
-  let counterDecimal = arr.length - intPartArr.length - 1;
-  let power = decimalPartArr.length - 1;
-  let decimalPart = 0;
-
-  for (let i = 0; i < decimalPartArr.length; i++) {
-    decimalPart += decimalPartArr[i] * 10 ** power;
-    power--;
-  }
-  decimalPart = decimalPart * (1 * 10 ** -counterDecimal);
-
-  // 4. Return final value
-  return intPart + decimalPart;
-}
-
-/**
- * Calculates the numerical value for a bookkeeping based on user inputs on the calculator
- * @param {array} operations - An gloabl variable array stroing user inputs on the calculator
- * @returns {number} The numerical value for a bookkeeping
- *
- * @example
- * // Returns: 3.2
- * operations = ["+", "3", "+", "+", ".", "2", "+", ".", ".", ".", "."];
- *
- * @example
- * // Returns: 5.77
- * operations = ["6", "+", "-", "1", ".", "2", "3", "+", "1"];
- *
- * * @example
- * // Returns: 8.8
- * operations = ["6", "+", "3", "-", "1", ".", "2", "+", "1"];
- *
- * * @example
- * // Returns: 6.8
- * operations = ["6", "+", "3", "-", "1", ".", "2", "-", "1"];
- *
- * * @example
- * // Returns: 0
- * operations = ["-", ".", "+", "+", "+", ".", "-"];
- *
- * * * @example
- * // Returns: 2.8
- * operations = ["-", ".", "0", "2", "+", "3"];
- */
-function processDetailsAddAmount() {
-  // 1. Clean up incoming array
-  let operationsClean = [];
-  let i = 0;
-
-  if (operations[0] === "+" || operations[0] === "-") {
-    operations.unshift("0");
-  }
-
-  while (i < operations.length) {
-    if (operations[i] === "+" || operations[i] === "-") {
-      let k = i + 1;
-      while (
-        k < operations.length &&
-        (operations[k] === "+" || operations[k] === "-")
-      ) {
-        k++;
-      }
-      operationsClean.push(operations[k - 1]);
-      i = k - 1;
-    } else if (operations[i] === ".") {
-      let k = i + 1;
-      while (k < operations.length && operations[k] === ".") {
-        k++;
-      }
-      operationsClean.push(operations[k - 1]);
-      i = k - 1;
-    } else {
-      operationsClean.push(operations[i]);
-    }
-    i++;
-  }
-
-  if (
-    operationsClean[operationsClean.length - 1] === "+" ||
-    operationsClean[operationsClean.length - 1] === "-"
-  ) {
-    operationsClean = operationsClean.slice(0, -1);
-  }
-
-  // 2. Check if operationsClean contains valid operations
-  // [.], [] are not valid
-  // ['.', '+', '.'] is valid (check numerical value after calculation)
-  if (
-    operationsClean === null ||
-    operationsClean.length === 0 ||
-    (operationsClean.length === 1 && operationsClean[0] === ".")
-  ) {
-    return -1; // return negative value
-  }
-
-  // 3. Process Numbers
-  let m = 0;
-  let numStack = [];
-  while (m < operationsClean.length) {
-    if (operationsClean[m] === "+" || operationsClean[m] === "-") {
-      m++;
-    } else {
-      const numArr = [];
-      let n = m;
-      while (
-        n < operationsClean.length &&
-        operationsClean[n] !== "+" &&
-        operationsClean[n] !== "-"
-      ) {
-        numArr.push(operationsClean[n]);
-        n++;
-      }
-      m = n;
-      const num = computeNumbers(numArr);
-      numStack.push(num);
-    }
-  }
-
-  // 4. Math operation
-  let operatorStack = [];
-  for (let i = 0; i < operationsClean.length; i++) {
-    if (operationsClean[i] === "+" || operationsClean[i] === "-") {
-      operatorStack.push(operationsClean[i]);
-    }
-  }
-
-  operatorStack = operatorStack.reverse();
-  numStack = numStack.reverse();
-
-  while (numStack.length !== 0 && operatorStack.length !== 0) {
-    const a = numStack.pop();
-    const b = numStack.pop();
-    const operator = operatorStack.pop();
-    let tempRes = 0;
-    if (operator === "+") {
-      tempRes = a + b;
-    } else if (operator === "-") {
-      tempRes = a - b;
-    }
-    numStack.push(tempRes);
-  }
-
-  // 5. Clean up operations for future use
-  operations.length = 0;
-  const finalRes = numStack.pop();
-  return finalRes;
-}
-
-const operations = [];
-function processDetails(event) {
-  let clickArea = event.target.tagName;
-  if (clickArea === "BUTTON") {
-    clickArea = event.target.closest("button");
-    const operation = clickArea.textContent;
-
-    if (operation === "ADD") {
-      console.log("Operations recorded: ", operations);
-      const value = processDetailsAddAmount(); // final amount cannot be <= 0
-      if (value <= 0) {
-        alert("Amount cannot be less than or equal to 0");
-      }
-
-      console.log(value);
-    } else {
-      operations.push(operation);
-    }
-  }
-}
-
-function initializeRecord(event) {
-  let clickArea = event.target.tagName;
-  if (clickArea === "SPAN" || clickArea === "BUTTON") {
-    clickArea = event.target.closest(".category-container__btn");
-    const category = clickArea.nextElementSibling.textContent;
-    console.log(category);
-    ui.doms.calculatorContainer.classList.remove("hidden");
-    ui.doms.overlay.classList.remove("hidden");
-  }
-}
-
-ui.doms.expenditureDiv.addEventListener("click", initializeRecord);
-ui.doms.incomeDiv.addEventListener("click", initializeRecord);
-
-ui.doms.calculatorContainer.addEventListener("click", processDetails);
-
-ui.doms.overlay.addEventListener("click", closeCalculator);
+ui.doms.expenditureDiv.addEventListener("click", ui.initializeRecord.bind(ui));
+ui.doms.incomeDiv.addEventListener("click", ui.initializeRecord.bind(ui));
+ui.doms.calculatorContainer.addEventListener(
+  "click",
+  ui.processDetails.bind(ui)
+);
+ui.doms.overlay.addEventListener("click", ui.closeCalculator.bind(ui));
 
