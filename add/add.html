@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <link rel="stylesheet" href="add.css" />
   </head>
 
@@ -94,6 +98,7 @@
         </div>
       </div>
     </div>
+
     <div class="modal-container hidden">
       <div class="modal-container__money modal-container__money_grid-layout">
         <span
@@ -128,7 +133,9 @@
         <button type="button">7</button>
         <button type="button">8</button>
         <button type="button">9</button>
-        <button type="button">📆</button>
+        <button type="button" class="modal-container__calculator_date-btn">
+          📆
+        </button>
         <button type="button">4</button>
         <button type="button">5</button>
         <button type="button">6</button>
@@ -145,6 +152,15 @@
       <button class="modal-container__update-btn" type="button">ADD</button>
     </div>
     <div class="overlay hidden"></div>
+
+    <div class="date-picker hidden">
+      <button class="date-picker__cancel-btn" type="button">Cancel</button>
+      <button class="date-picker__confirm-btn" type="button">Confirm</button>
+      <input class="date-picker__input" type="text" id="datepicker" />
+    </div>
+    <div class="overlay__date-picker hidden"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script src="./add.js"></script>
   </body>

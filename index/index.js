@@ -39,9 +39,11 @@ class Booking {
    * @returns A number of typeof string
    */
   stringifyValue() {
-    const strValue = "$" + this.value.toFixed(2).toString();
-    if (this.isExpenditure) return "-" + strValue;
-    return strValue;
+    if (this.value) {
+      const strValue = "$" + this.value.toFixed(2).toString();
+      if (this.isExpenditure) return "-" + strValue;
+      return strValue;
+    }
   }
 }
 

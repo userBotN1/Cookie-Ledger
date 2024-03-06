@@ -1,3 +1,5 @@
+// import flatpickr from "flatpickr";
+
 const bookingsString = localStorage.getItem("bookings");
 const bookings = JSON.parse(bookingsString);
 
@@ -41,6 +43,7 @@ class UI {
     this.value = 0;
     this.isExpenditure;
     this.operations = [];
+    this.dateStr = "";
 
     // DOM selection
     this.doms = {
@@ -52,6 +55,15 @@ class UI {
       incomeDiv: document.querySelector(".main-container__income"),
       calculatorContainer: document.querySelector(".modal-container"),
       overlay: document.querySelector(".overlay"),
+
+      calculatorCalendarBtn: document.querySelector(
+        ".modal-container__calculator_date-btn"
+      ),
+      datePickerDiv: document.querySelector(".date-picker"),
+      datePickerCancelBtn: document.querySelector(".date-picker__cancel-btn"),
+      datePickerConfirmBtn: document.querySelector(".date-picker__confirm-btn"),
+      datePickerInputField: document.querySelector(".date-picker__input"),
+      overlayDatePicker: document.querySelector(".overlay__date-picker"),
     };
   }
 
@@ -132,7 +144,7 @@ class UI {
     this.showCategory("Income");
   }
 
-  /* --------------- Adding a bookkeeping --------------- */
+  /* --------------- Add a new booking --------------- */
 
   /**
    * This function servers as an entry point where user can initialize the process of adding a bookkeeping
@@ -368,14 +380,17 @@ class UI {
 
       if (operation === "ADD") {
         const value = this.processDetailsAddAmount(); // final amount cannot be <= 0
+        console.log(value);
         if (value <= 0) {
           alert("Amount cannot be less than or equal to 0");
+        } else if (isNaN(value)) {
+          alert("Invalid value");
         } else {
           this.value = value;
           this.addNewBooking();
           this.closeCalculator();
         }
-      } else {
+      } else if (!isNaN(operation) || operation === "+" || operation === "-") {
         this.operations.push(operation);
       }
     }
@@ -387,18 +402,24 @@ class UI {
   }
 
   addNewBooking() {
-    const currentTime = new Date();
-    const year = currentTime.getFullYear().toString();
-    const month = (currentTime.getMonth() + 1).toString().padStart(2, "0");
-    const day = currentTime.getDate().toString().padStart(2, "0");
-    const hour = currentTime.getHours().toString().padStart(2, "0");
-    const minute = currentTime.getMinutes().toString().padStart(2, "0");
-    const second = currentTime.getSeconds().toString().padStart(2, "0");
-    const millisecond = currentTime
-      .getMilliseconds()
-      .toString()
-      .padStart(3, "0");
+    console.log("dateStr", this.dateStr);
+    let time;
+    if (this.dateStr === "") {
+      time = new Date();
+    } else {
+      time = new Date(this.dateStr);
+    }
+
+    const year = time.getFullYear().toString();
+    const month = (time.getMonth() + 1).toString().padStart(2, "0");
+    const day = time.getDate().toString().padStart(2, "0");
+    const hour = time.getHours().toString().padStart(2, "0");
+    const minute = time.getMinutes().toString().padStart(2, "0");
+    const second = time.getSeconds().toString().padStart(2, "0");
+    const millisecond = time.getMilliseconds().toString().padStart(3, "0");
     const formatTime = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`;
+
+    console.log(formatTime);
 
     const newBooking = new Booking(
       this.category,
@@ -411,6 +432,33 @@ class UI {
 
     const updatedBookingsString = JSON.stringify(bookings);
     localStorage.setItem("bookings", updatedBookingsString);
+  }
+
+  /* --------------- Date Picker --------------- */
+
+  initializeDatePicker() {
+    this.doms.datePickerDiv.classList.remove("hidden");
+    this.doms.overlayDatePicker.classList.remove("hidden");
+
+    flatpickr(this.doms.datePickerInputField, {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      onClose: (selectedDates, dateStr, instance) => {
+        this.dateStr = dateStr;
+
+        console.log(this.dateStr);
+      },
+    });
+  }
+
+  cancelDatePicker() {
+    this.doms.datePickerDiv.classList.add("hidden");
+    this.doms.overlayDatePicker.classList.add("hidden");
+  }
+
+  confirmDatePicker() {
+    this.doms.datePickerDiv.classList.add("hidden");
+    this.doms.overlayDatePicker.classList.add("hidden");
   }
 }
 const ui = new UI();
@@ -434,4 +482,21 @@ ui.doms.calculatorContainer.addEventListener(
   ui.processDetails.bind(ui)
 );
 ui.doms.overlay.addEventListener("click", ui.closeCalculator.bind(ui));
+
+/* --------------- Date Picker --------------- */
+
+ui.doms.calculatorCalendarBtn.addEventListener(
+  "click",
+  ui.initializeDatePicker.bind(ui)
+);
+
+ui.doms.datePickerCancelBtn.addEventListener(
+  "click",
+  ui.cancelDatePicker.bind(ui)
+);
+
+ui.doms.datePickerConfirmBtn.addEventListener(
+  "click",
+  ui.confirmDatePicker.bind(ui)
+);
 
