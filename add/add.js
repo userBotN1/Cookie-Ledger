@@ -85,12 +85,16 @@ class UI {
     // Generate HTML content for categories in expenditure
     let expenditureTemplate = `<div class="main-container__expenditure">`;
     expenditureArr.forEach((category) => {
+      const categoryNameCap =
+        category.categoryName.charAt(0).toUpperCase() +
+        category.categoryName.slice(1);
+
       const oneCategory = `
         <div class="category-container">
             <button class="category-container__btn">
                 <span class="category-container__btn-emoji">${category.emoji}</span>
             </button>
-            <span class="category-container__desc">${category.categoryName}</span>
+            <span class="category-container__desc">${categoryNameCap}</span>
         </div>`;
       expenditureTemplate += oneCategory;
     });
@@ -99,12 +103,16 @@ class UI {
     // Generate HTML content for categories in income
     let incomeTemplate = `<div class="main-container__income">`;
     incomeArr.forEach((category) => {
+      const categoryNameCap =
+        category.categoryName.charAt(0).toUpperCase() +
+        category.categoryName.slice(1);
+
       const oneCategory = `
         <div class="category-container">
             <button class="category-container__btn">
                 <span class="category-container__btn-emoji">${category.emoji}</span>
             </button>
-            <span class="category-container__desc">${category.categoryName}</span>
+            <span class="category-container__desc">${categoryNameCap}</span>
         </div>`;
       incomeTemplate += oneCategory;
     });
@@ -390,7 +398,12 @@ class UI {
           this.addNewBooking();
           this.closeCalculator();
         }
-      } else if (!isNaN(operation) || operation === "+" || operation === "-") {
+      } else if (
+        !isNaN(operation) ||
+        operation === "+" ||
+        operation === "-" ||
+        operation === "."
+      ) {
         this.operations.push(operation);
       }
     }
