@@ -1,3 +1,4 @@
+/* --------------- LOCAL STORAGE --------------- */
 const categoriesString = localStorage.getItem("categories");
 const categories = JSON.parse(categoriesString);
 
@@ -20,11 +21,11 @@ class Booking {
     e.category = e.category.charAt(0).toLowerCase() + e.category.slice(1);
 
     this.emoji = categories[e.category].emoji;
-
     this.category = e.category;
     this.time = new Date(e.time);
     this.value = e.value;
     this.isExpenditure = e.isExpenditure;
+    this.customNote = e.customNote;
   }
 
   /**
@@ -216,7 +217,7 @@ class Day {
     this.data.sort((a, b) => b.time - a.time);
   }
 }
-const day1 = new Day("2024-01-03");
+// const day1 = new Day("2024-01-03");
 // console.log(day1.getTotalIncome());
 
 class Month {
@@ -401,6 +402,7 @@ class UI {
     }
 
     this.data = dateData;
+
     this.doms = {
       dayContainer: document.querySelector(".day-container"),
       header: document.querySelector("header"),
@@ -411,6 +413,7 @@ class UI {
         ".expense-income-container__income_value"
       ),
       allDaysContainer: document.querySelector(".all-days-container"),
+      // oneBooking: document.querySelector(".day-container__details_booking"),
     };
 
     this.createOneDayHTML();
@@ -424,13 +427,16 @@ class UI {
    * @param {number} index
    * @returns HTML content for one booking
    */
-  createBookingHTML(booking, index) {
+  createBookingHTML(booking, dayIndex, itemIndex) {
     const category = booking.category;
     const capitalizedCategory =
       category.charAt(0).toUpperCase() + category.slice(1);
+    // console.log("Note", booking.customNote);
+    // console.log("Time", booking.time);
+    // console.log("");
 
     return `
-        <li index=${index} class="day-container__details_booking">
+        <li class="day-container__details_booking" data-dayIndex=${dayIndex} data-itemIndex=${itemIndex}>
             <span class="day-container__details-emoji">${booking.emoji}</span>
             <span class="day-container__details-category">${capitalizedCategory}</span>
             <span class="day-container__details-time">${booking.stringifyTime()}</span>
@@ -445,6 +451,7 @@ class UI {
     this.data.sort((a, b) => b.date - a.date);
     let dayTitle = ``;
 
+    let dayIndex = 0;
     for (const e of this.data) {
       e.rankBookings();
       dayTitle += `
@@ -456,12 +463,16 @@ class UI {
 
       let dayBookings = `<ul class="day-container__details">`;
 
-      //   console.log(e.data);
+      let itemIndex = 0;
       for (const booking of e.data) {
-        dayBookings += this.createBookingHTML(booking);
+        dayBookings += this.createBookingHTML(booking, dayIndex, itemIndex);
+
+        itemIndex += 1;
       }
       dayBookings += `</ul>`;
       dayTitle += dayBookings;
+
+      dayIndex += 1;
     }
 
     this.doms.dayContainer.innerHTML = dayTitle;
@@ -500,23 +511,34 @@ class UI {
     this.doms.summaryExpenditure.textContent = expenditure;
     this.doms.summaryIncome.textContent = income;
   }
+
+  /* --------------- INTERACTION --------------- */
+  /* --------------- Segue to Transaction Details Page --------------- */
+  segueToTransactionDetails(event) {
+    let targetElement = event.target.closest(".day-container__details_booking");
+
+    if (targetElement) {
+      // Retrieve Info
+      const dayIndex = targetElement.getAttribute("data-dayIndex");
+      const itemIndex = targetElement.getAttribute("data-itemIndex");
+      const booking = this.data[dayIndex].data[itemIndex];
+      console.log(booking);
+
+      window.location.href = "../transaction-details/transaction-details.html";
+    }
+  }
 }
 
-// const ui = new UI("2023");
-const ui = new UI("2024-03");
+// const ui = new UI("2024");
+const ui = new UI("2024-04");
 
 /* --------------- INTERACTION --------------- */
-ui.doms.allDaysContainer.addEventListener("click", function (e) {
-  if (e.target.classList.contains("day-container__details_booking")) {
-    const index = +e.target.getAttribute("index");
-    ui.increase(index);
+/* --------------- Segue to Transaction Details Page --------------- */
+ui.doms.allDaysContainer.addEventListener("click", (event) =>
+  ui.segueToTransactionDetails(event)
+);
 
-    // Transmit data to Transaction Details page
-    // Jump to Transaction Details page
-  }
-});
-
-const mainContainer = document.querySelector(".main-container");
+/* --------------- Hide Footer on Scrolling --------------- */
 const footer = document.querySelector("footer");
 let lastScrollTop = 0;
 window.addEventListener("scroll", function () {
@@ -525,20 +547,12 @@ window.addEventListener("scroll", function () {
     footer.style.display = "none";
   } else {
     footer.style.display = "flex";
-    // lastScrollTop = currentScrollTop;
   }
 
   lastScrollTop = currentScrollTop;
-  //   console.log(lastScrollTop, currentScrollTop);
-  // console.log(currentScrollTop);
 
   if (window.innerHeight + currentScrollTop >= document.body.offsetHeight) {
-    // console.log("bottom");
     footer.style.display = "flex";
   }
 });
-
-// console.log(mainContainer.scrollHeight);
-// console.log(mainContainer.offsetHeight);
-// console.log(window.innerHeight);
 

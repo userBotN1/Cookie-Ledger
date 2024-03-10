@@ -26,6 +26,11 @@ header img {
   border-radius: 20px;
 }
 
+.header-delete-btn {
+  background-color: rgba(244, 244, 243, 255);
+  border-radius: 20px;
+}
+
 header span {
   font-size: 1.2em;
   font-weight: bold;
@@ -246,3 +251,4 @@ footer button {
   padding: 10px;
   border-radius: 10px;
 }
+

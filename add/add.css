@@ -137,6 +137,7 @@ header {
 .modal-container__money_grid-layout {
   grid-area: 1/1/2/2;
   grid-template-columns: min-content 1fr;
+  column-gap: 4px;
 }
 
 .modal-container__note_grid-layout {

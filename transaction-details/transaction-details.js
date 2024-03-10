@@ -1,6 +1,12 @@
-// const edit_btn = document.querySelector(".edit-btn");
-// edit_btn.addEventListener("click", function () {
-//   console.log("clicked");
-//   const container = document.querySelector(".modal-container");
-//   container.classList.toggle("hidden");
-// });
+/* --------------- DATA PROCESSING --------------- */
+
+class Booking {
+  constructor(category, time, value, isExpenditure, customNote) {
+    this.category = category;
+    this.time = time;
+    this.value = value;
+    this.isExpenditure = isExpenditure;
+    this.customNote = customNote;
+  }
+}
+
