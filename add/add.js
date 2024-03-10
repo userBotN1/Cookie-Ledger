@@ -1,5 +1,3 @@
-// import flatpickr from "flatpickr";
-
 const bookingsString = localStorage.getItem("bookings");
 const bookings = JSON.parse(bookingsString);
 
@@ -16,11 +14,12 @@ class Category {
 }
 
 class Booking {
-  constructor(category, time, value, isExpenditure) {
+  constructor(category, time, value, isExpenditure, customNote) {
     this.category = category;
     this.time = time;
     this.value = value;
     this.isExpenditure = isExpenditure;
+    this.customNote = customNote;
   }
 }
 
@@ -40,10 +39,12 @@ class UI {
     // Interaction
     this.categoryIndex = 0;
     this.category = "";
+
     this.value = 0;
     this.isExpenditure;
     this.operations = [];
     this.dateStr = "";
+    this.customNote = "";
 
     // DOM selection
     this.doms = {
@@ -64,6 +65,14 @@ class UI {
       datePickerConfirmBtn: document.querySelector(".date-picker__confirm-btn"),
       datePickerInputField: document.querySelector(".date-picker__input"),
       overlayDatePicker: document.querySelector(".overlay__date-picker"),
+
+      noteInputField: document.querySelector(".modal-container__note_value"),
+      calculatorCategoryDesc: document.querySelector(
+        ".modal-container__money_category-desc"
+      ),
+      calculatorCategoryEmoji: document.querySelector(
+        ".modal-container__money_emoji"
+      ),
     };
   }
 
@@ -156,7 +165,7 @@ class UI {
 
   /**
    * This function servers as an entry point where user can initialize the process of adding a bookkeeping
-   * The function updates variable "this.category"
+   * The function updates variable "this.category" and "this.isExpenditure"
    */
   initializeRecord(event, isExpenditure) {
     this.isExpenditure = isExpenditure;
@@ -164,6 +173,13 @@ class UI {
     if (clickArea === "SPAN" || clickArea === "BUTTON") {
       clickArea = event.target.closest(".category-container__btn");
       this.category = clickArea.nextElementSibling.textContent;
+
+      // Update category emoji and description in calculator
+      const emoji = clickArea.querySelector(
+        ".category-container__btn-emoji"
+      ).textContent;
+      this.doms.calculatorCategoryDesc.textContent = this.category;
+      this.doms.calculatorCategoryEmoji.textContent = emoji;
 
       ui.doms.calculatorContainer.classList.remove("hidden");
       ui.doms.overlay.classList.remove("hidden");
@@ -389,6 +405,7 @@ class UI {
       if (operation === "ADD") {
         const value = this.processDetailsAddAmount(); // final amount cannot be <= 0
         console.log(value);
+        // console.log(event.target.value);
         if (value <= 0) {
           alert("Amount cannot be less than or equal to 0");
         } else if (isNaN(value)) {
@@ -412,10 +429,18 @@ class UI {
   closeCalculator() {
     this.doms.calculatorContainer.classList.add("hidden");
     this.doms.overlay.classList.add("hidden");
+
+    this.value = 0;
+    this.isExpenditure;
+    this.operations = [];
+    this.dateStr = "";
+    this.customNote = "";
+    this.doms.noteInputField.value = "";
   }
 
   addNewBooking() {
-    console.log("dateStr", this.dateStr);
+    // Format date
+    // console.log("dateStr", this.dateStr);
     let time;
     if (this.dateStr === "") {
       time = new Date();
@@ -432,13 +457,18 @@ class UI {
     const millisecond = time.getMilliseconds().toString().padStart(3, "0");
     const formatTime = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`;
 
-    console.log(formatTime);
+    // console.log(formatTime);
+
+    // Format category
+    const formatCategory =
+      this.category.charAt(0).toLocaleLowerCase() + this.category.slice(1);
 
     const newBooking = new Booking(
-      this.category,
+      formatCategory,
       formatTime,
       this.value,
-      this.isExpenditure
+      this.isExpenditure,
+      this.customNote
     );
 
     bookings.push(newBooking);
@@ -473,6 +503,12 @@ class UI {
     this.doms.datePickerDiv.classList.add("hidden");
     this.doms.overlayDatePicker.classList.add("hidden");
   }
+
+  /* --------------- Adding Custom Notes --------------- */
+  initializeNote(event) {
+    this.customNote = this.doms.noteInputField.value;
+    // console.log(event.target.value);
+  }
 }
 const ui = new UI();
 
@@ -497,7 +533,6 @@ ui.doms.calculatorContainer.addEventListener(
 ui.doms.overlay.addEventListener("click", ui.closeCalculator.bind(ui));
 
 /* --------------- Date Picker --------------- */
-
 ui.doms.calculatorCalendarBtn.addEventListener(
   "click",
   ui.initializeDatePicker.bind(ui)
@@ -512,4 +547,7 @@ ui.doms.datePickerConfirmBtn.addEventListener(
   "click",
   ui.confirmDatePicker.bind(ui)
 );
+
+/* --------------- Adding Custom Notes --------------- */
+ui.doms.noteInputField.addEventListener("change", ui.initializeNote.bind(ui));
 

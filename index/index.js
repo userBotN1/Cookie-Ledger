@@ -17,7 +17,10 @@ const bookings = JSON.parse(bookingsString);
 class Booking {
   constructor(e) {
     // this.emoji = categories[e.category]; outdated way of getting emoji
+    e.category = e.category.charAt(0).toLowerCase() + e.category.slice(1);
+
     this.emoji = categories[e.category].emoji;
+
     this.category = e.category;
     this.time = new Date(e.time);
     this.value = e.value;
