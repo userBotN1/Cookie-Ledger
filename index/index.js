@@ -518,13 +518,14 @@ class UI {
     let targetElement = event.target.closest(".day-container__details_booking");
 
     if (targetElement) {
-      // Retrieve Info
+      // Retrieve a particular bookkeeping
       const dayIndex = targetElement.getAttribute("data-dayIndex");
       const itemIndex = targetElement.getAttribute("data-itemIndex");
       const booking = this.data[dayIndex].data[itemIndex];
-      console.log(booking);
 
-      window.location.href = "../transaction-details/transaction-details.html";
+      // Send data to transaction details page
+      const bookingString = encodeURIComponent(JSON.stringify(booking));
+      window.location.href = `../transaction-details/transaction-details.html?data=${bookingString}`;
     }
   }
 }
